@@ -82,17 +82,17 @@ var camButton = new MyButtonTemplate({url:"cam.png",name:"cam"});
 var calButton = new MyButtonTemplate({url:"cal.png",name:"cal"});
 
 function makeHome(){
-	return new Column({name:"home", left:30, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"home", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
 function makeCal(){
-	return new Column({name:"cal", left:30, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"cal", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
 function makeCam(){
-	return new Column({name:"cam", left:30, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"cam", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
