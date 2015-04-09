@@ -1,4 +1,5 @@
-//@program
+// IVY - MOBILE APP
+
 var THEME = require("themes/flat/theme");
 var BUTTONS = require("controls/buttons");
 var CONTROL = require("mobile/control");
@@ -198,4 +199,6 @@ mainColumn.add(homeScreen);
 application.behavior = new ApplicationBehavior();
 application.add(mainColumn);
 application.add(menu);
-	
+
+
+// IVY - MOBILE APP	
