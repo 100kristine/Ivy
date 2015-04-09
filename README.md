@@ -6,7 +6,7 @@ IVY is intended to optimize and enhance the process of caring for living flower 
 
 #Starter Example:
 
- ##in main.js: (make sure @module is there!!)
+##in main.js: (make sure @module is there!!)
 
 
 //@module
