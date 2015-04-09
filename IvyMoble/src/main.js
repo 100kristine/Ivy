@@ -159,31 +159,32 @@ var lightsButton = new MyButtonTemplate({url:"lights.png",name:"lights"});
 
 
 function makeHome(){
-	return new Column({name:"home", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"home", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
 function makeCal(){
-	return new Column({name:"cal", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"cal", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
 function makePower(){
-	return new Column({name:"power", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"power", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
 function makeMyFlowers(){
-	return new Column({name:"flower", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"flower", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
 function makeLights(){
-	return new Column({name:"lights", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
+	return new Column({name:"lights", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
 				contents:[]});
 }
 
-var menu = new Line({left:0, right:0, top:375, bottom:0,skin:redSkin, 
+
+var menu = new Line({left:0, right:0, height:100, bottom:0,skin:redSkin, 
 		contents:[homeButton,calButton,powerButton,flowerButton,lightsButton]
 	});
 
