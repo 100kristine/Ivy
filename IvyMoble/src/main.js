@@ -6,6 +6,9 @@ var CONTROL = require("mobile/control");
 //var PinsSimulators = require ("PinsSimulators");
 var SLIDERS = require('controls/sliders');
 
+//@module
+var FLOWERS = require('myflowers.js');
+
 /*Screen stuff*/
 home = true;
 currentScreen = "start";
@@ -174,8 +177,8 @@ function makePower(){
 }
 
 function makeMyFlowers(){
-	return new Column({name:"flower", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	return FLOWERS.getColumn();//new Column({name:"flower", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
 }
 
 function makeLights(){
