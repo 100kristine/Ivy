@@ -91,7 +91,7 @@ function drawHeart() {
 	      ctx.fill();
 	      
 	}
-	ctx.drawImage(hiresPic,0,0,100,150);
+//	ctx.drawImage(hiresPic,0,0,100,150);
     //ctx.fillStyle = "black";
 	//trace(mainCanvas.width);
 	//ctx.fillRect( 0,0,mainCanvas.width,mainCanvas.height);
