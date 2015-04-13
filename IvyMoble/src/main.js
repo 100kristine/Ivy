@@ -5,11 +5,12 @@ var BUTTONS = require("controls/buttons");
 var CONTROL = require("mobile/control");
 //var PinsSimulators = require ("PinsSimulators");
 var SLIDERS = require('controls/sliders');
-var CAL = require('calendar.js');
 
 //@module
-var FLOWERS = require('myflowers.js');
+var CAL = require('calendar.js');
 var POWERTAB = require('powertab.js');
+var FLOWERS = require('myflowers.js');
+var LIGHTING = require('lighting.js');
 
 /*Screen stuff*/
 home = true;
@@ -197,8 +198,8 @@ function makeMyFlowers(){
 }
 
 function makeLights(){
-	return new Column({name:"lights", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	return LIGHTING.getColumn();//return new Column({name:"lights", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
 }
 
 

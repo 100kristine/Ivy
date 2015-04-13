@@ -22,7 +22,7 @@ var waterLabel = new Label({left:40, top: 30, height: 10, string: "Change water"
 var waterSchedLabel = new Label({left:220, string: "3 days", style: labelStyle});
 
 function getColumn(){
-	return new Column({name:"calendar", left:0, right:0, \
+	return new Column({name:"calendar", left:0, right:0,
 				top:20, bottom:100, skin: whiteSkin,
 	contents:[
 		automatedLabel,
