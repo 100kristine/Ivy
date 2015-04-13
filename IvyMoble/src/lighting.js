@@ -69,17 +69,31 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
-var mainCanvas =  new Canvas({ left: 0, right: 0, top: 0, bottom: 0,height:300,width:100});
+var mainCanvas =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:100,width:300});
+var r = 255;
+var g = 255;
+var b = 255;
 
 function drawHeart() {
 //from http://calebevans.me/projects/jcanvas/docs/extending/
     // Just to keep our lines short
     var ctx = mainCanvas.getContext( "2d" );
-
-    ctx.fillStyle = "black";
+    var x = [100,180,150,100,150,170,100,180,120,100,150,170];
+    var y = [10,60,40,10,50,20,20,10,70,90,10,70,90];
+    var ra = [5,2,3,4,7,9,3,7,9,3,7,9,3];
+    var color = "rgb("+[r,g,b].join(",")+")";
+    trace(color);
+    
+    for(i=0; i<x.length; i++) {
+			ctx.beginPath();
+	      ctx.arc(x[i], y[i], ra[i], 0, 2 * Math.PI, false);
+	      ctx.fillStyle = color;
+	      ctx.fill();
+	}
+    //ctx.fillStyle = "black";
 	//trace(mainCanvas.width);
-	ctx.fillRect( 0,0,mainCanvas.width,mainCanvas.height);
-	//ctx.drawImage("lightingIcons/lighting_flower.png",10,10);
+	//ctx.fillRect( 0,0,mainCanvas.width,mainCanvas.height);
+	//ctx.drawImage(hiresPic,0,0,50,50);
     // Draw heart
     //ctx.beginPath();
     //ctx.moveTo(p.x, p.y + p.radius);
@@ -206,6 +220,14 @@ var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
 		onValueChanged: { value: function(container){
     		SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
     		trace("Value is: " + this.data.value + "\n");
+    		var scale = (this.data.value/50);
+    		r = (r*scale<1) ? 255: Math.round(.2*r*scale);
+    		b = (b*scale<1) ? 255: Math.round(.3*b*scale);
+    		g = (g*scale<1) ? 255: Math.round(.01*g*scale);
+    		trace(r+" ");
+    		trace(b+" ");
+    		trace(g+" ");
+    		trace("colors");
     		drawHeart();
     		
     	}}
@@ -214,7 +236,9 @@ var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
 
 var plantPicture = new Picture({ left:0, right:0, top:0, height:180, width:300,
 									url: "lightingIcons/lighting_flower.png" });
-									
+
+var hiresPic = 	new Texture("lightingIcons/lighting_flower2.png");
+																
 var brightnessSliderLabel = makeLabel("brightness",l2);
 var brightnessSlider = new MySlider({ min:0, max:100, value:50 });
 
@@ -233,8 +257,9 @@ function getColumn(){
 					onoffStatusLabel,
 					//numFlowers,
 					onoffStatus,
-					//mainCanvas,
+					
 					plantPicture,
+					mainCanvas,
 					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//typeFlowers,
 					//typeFlowers2,
