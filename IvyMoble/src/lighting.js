@@ -39,19 +39,29 @@ function updateTypeFlowers(){
 var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 	top:0, bottom:0, left:0, right:0, skin: new Skin({fill:background}),
 	contents:[
-		new Picture({left:0, right:0, top:0, height:30, width:90, url: $.url, name: $.name})
+		new Picture({left:0, right:0, top:0, height:25, width:75, url: $.url, name: $.name})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value:  function(button){
 				if (onoffFlag == true){
 					onoffFlag = false;
 					offLIGHT(onoffButton);
-					onoffStatusLabel[0].string = "Lighting feature is currently off."; 
+					onoffStatusLabel[0].string = "Lighting feature is currently off.";
+					plantPicture.visible = false;
+					brightnessSliderLabel.visible = false;
+					brightnessSlider.visible = false;
+					hueSliderLabel.visible = false;
+					hueSlider.visible = false; 
 				}
 				else{
 					onoffFlag = true;
 					onLIGHT(onoffButton);
 					onoffStatusLabel[0].string = "Lighting feature is currently on.";
+					plantPicture.visible = true;
+					brightnessSliderLabel.visible = true;
+					brightnessSlider.visible = true;
+					hueSliderLabel.visible = true;
+					hueSlider.visible = true;
 				}
 				
 				//inactivateAllMYF(currentScreen);
@@ -179,7 +189,13 @@ var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
     })
 }});
 
+var plantPicture = new Picture({ left:0, right:0, top:0, height:150, width:250,
+									url: "lightingIcons/lighting_flower.png" });
+									
+var brightnessSliderLabel = makeLabel("Brightness",l2);
 var brightnessSlider = new MySlider({ min:0, max:100, value:50 });
+
+var hueSliderLabel = makeLabel("Hue",l2);
 var hueSlider = new MySlider({ min:0, max:100, value:50 });
 
 function getColumn(){
@@ -194,22 +210,20 @@ function getColumn(){
 					onoffStatusLabel,
 					//numFlowers,
 					onoffStatus,
-					new Picture({
-						left:0, right:0, top:0, height:150, width:250, url: "lightingIcons/lighting_flower.png"
-					}),
+					plantPicture,
 					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//typeFlowers,
 					//typeFlowers2,
 					//subgrid,
 					new Line({left:0, right:0, top:10, bottom:0,
 						contents:[
-							makeLabel("Brightness",l2),
+							brightnessSliderLabel,
 							brightnessSlider
 						]
 					}),
 					new Line({left:0, right:0, top:10, bottom:0,
 						contents:[
-							makeLabel("Hue",l2),
+							hueSliderLabel,
 							hueSlider
 						]
 					})
