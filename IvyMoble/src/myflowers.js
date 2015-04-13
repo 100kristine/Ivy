@@ -1,6 +1,8 @@
 //var cool = "test";
 //exports.cool = cool;
 
+var background = "white"; //"#363636"
+
 
 function activeMYF(button){
 	button[0].url = "myflowersIcons/" + button[0].name +"Active.png";
@@ -18,10 +20,30 @@ function inactivateAllMYF(currentScreen) {
 	}
 }
 
+function updateNumFlowers(str){
+	if (str != "1") {
+		numFlowers[0].string = "My vase contains " + str + " flowers";
+	}
+	else {
+		numFlowers[0].string = "My vase contains " + str + " flower";
+	}
+}
+
+function updateTypeFlowers(){
+	if (flowerTypes.length == 0){
+		typeFlowers[0].string = "Select flower types to get started!";
+		typeFlowers2[0].string = "";
+	}
+	else {
+		typeFlowers[0].string ="The types of flowers in my vase are:"
+		typeFlowers2[0].string = flowerTypes.join(", ");
+	}
+}
+
 exports.activeMYF = activeMYF;
 
 var SelectableTemplate = BUTTONS.Button.template(function($){ return{
-	top:0, bottom:0, left:0, right:0, skin: new Skin({fill:"#363636"}),
+	top:0, bottom:0, left:0, right:0, skin: new Skin({fill:background}),
 	contents:[
 		new Picture({left:0, right:0, top:0, height:50, width:50, url: $.url, name: $.name})
 	],
@@ -32,18 +54,22 @@ var SelectableTemplate = BUTTONS.Button.template(function($){ return{
 				switch (button[0].name) {
 					case "none":
 						activeMYF(noneButton);
+						updateNumFlowers("0");
 						break;
 						
 					case "few":
 						activeMYF(fewButton);
+						updateNumFlowers("1");
 						break;
 						
 					case "some":
 						activeMYF(someButton);
+						updateNumFlowers("2-3");
 						break;
 						
 					case "many":
 						activeMYF(manyButton);
+						updateNumFlowers("5+");
 						break;
 			}
 			inactivateAllMYF(currentScreen);
@@ -59,7 +85,7 @@ var manyButton = new SelectableTemplate({url:"myflowersIcons/many.png",name:"man
 
 var blue = new Skin({fill:"blue"});
 var green = new Skin({fill:"#9bd91f"});
-var black= new Skin({fill:"#363636"});
+var black= new Skin({fill:background});
 
 var logoSkin = new Skin({
 	width:100,
@@ -85,33 +111,40 @@ var gridClickable = BUTTONS.Button.template(function($){ return{
 				if ((button.name) == "off"){
 					button.name = "on";
 					button.skin = logoSkin;
+					flowerTypes.push(button[0].name.replace(".png", ''));
+					updateTypeFlowers();
 				}
 				else{
 					button.name = "off";
 					button.skin = logoSkin2;
+					var i = flowerTypes.indexOf(button[0].name.replace(".png", ''));
+					flowerTypes.splice(i,1);
+					updateTypeFlowers();
 				}
 			}}
 		})
 	}});
 
 			
-var flowerAmounts = new Line({name:"flowerAmounts", left:0, right:0, top:0, height:50,bottom:0, skin: new Skin({fill:"#363636"}),
+var flowerAmounts = new Line({name:"flowerAmounts", left:0, right:0, top:0, height:50,bottom:0, skin: new Skin({fill:background}),
 						contents:[
 							noneButton,
 							fewButton,
 							someButton,
 							manyButton]
 						});
-					
+activeMYF(noneButton);
+	
 var urlList = ["daisy.png","rose.png","lily.png","daffodil.png",
-				"snap.png","hydra.png","mum.png","other.png"];	
+				"tulip.png","orchid.png","mums.png","other.png"];	
+
 
 
 	
 function selectableGrid(){
 	function makeButton(url){
 			trace(url);
-			return new gridClickable({url:"myflowersIcons/" + url,name:"button"});
+			return new gridClickable({url:"myflowersIcons/" + url,name:url});
 		};
 		
 	function makeLine(start,stop){
@@ -119,11 +152,12 @@ function selectableGrid(){
 		
 		for (i=start; i<stop+1; i++){
 			temp.add(makeButton(urlList[i]));
+			
 		}
 		return temp;
 	}
 	
-	var col= new Column({left:0, right:0, top:0, bottom:0, height:120, skin: new Skin({fill:"#363636"}), 
+	var col= new Column({left:0, right:0, top:0, bottom:0, height:120, skin: new Skin({fill:background}), 
 				contents:[
 				]});
 				
@@ -135,38 +169,56 @@ function selectableGrid(){
 
 var l1 = new Style( { font: "15px", color:"#9bd91f" } );
 var l2 = new Style( { font: "20px", color:"#9bd91f" } );
-var l3 = new Style( { font: "40px", color:"#363636" } );
+var l3 = new Style( { font: "40px", color:background } );
 
 function makeLabel(str,sty){
 	return new Label({left:0, right:0, string:str,style:sty});
 }
 
+var flowerTypes = [];
+var flowerNum = 0;
+
+var numFlowers = new Line({name:"numFlowers", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
+						contents:[makeLabel("My vase contains 0 flowers.",l2)]})
+
+var typeFlowers = new Line({name:"typeFlowers", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
+						contents:[makeLabel("Select flower types to get started!",l2),
+						]});
+						
+var typeFlowers2 = new Line({name:"typeFlowers2", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:background}),
+						contents:[makeLabel("",l1),
+						]})
+
 
 function getColumn(){
 
 	var subgrid = selectableGrid();
-	return new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"#363636"}), 
+	return new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:background}), 
 				contents:[
 					new Line({name:"title", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"}),
 						contents:[makeLabel("My Flowers",l3)]}),
-					new Line({name:"fill", left:0, right:0, top:5, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
-					new Line({name:"heading", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#363636"}),
-						contents:[makeLabel("Number of Flowers in Vase",l2)]}),
-					flowerAmounts,
-					new Line({name:"fill", left:0, right:0, top:5, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
+					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
+					//new Line({name:"heading", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
+					//	contents:[makeLabel("Number of Flowers in Vase",l2)]}),
+					,numFlowers,
 					
+					flowerAmounts,
+					new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//new Line({name:"labels", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"black"}),
 					//	contents:[makeLabel("None",l1),makeLabel("One",l1),makeLabel("Few",l1),makeLabel("Many",l1)]}),
 					
-					new Line({name:"heading2", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#363636"}),
-						contents:[makeLabel("Types of Flowers in Vase",l2)]}),
+					//new Line({name:"heading2", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
+					//	contents:[makeLabel("Types of Flowers in Vase",l2)]}),
+						
 					
 					
 						
 				//	new Line({name:"padding", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"red"}),
 					//	contents:[]}),
+					typeFlowers,typeFlowers2,
 					subgrid,
-					new Line({name:"fill", left:0, right:0, top:5, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
+					
+					//new Line({name:"fill", left:0, right:0, top:5, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 				]});
 }
 
