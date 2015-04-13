@@ -5,6 +5,7 @@ var BUTTONS = require("controls/buttons");
 var CONTROL = require("mobile/control");
 //var PinsSimulators = require ("PinsSimulators");
 var SLIDERS = require('controls/sliders');
+var CAL = require('calendar.js');
 
 /*Screen stuff*/
 home = true;
@@ -164,8 +165,9 @@ function makeHome(){
 }
 
 function makeCal(){
-	return new Column({name:"cal", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	// return new Column({name:"cal", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+	// 			contents:[]});
+	return CAL.getColumn();
 }
 
 function makePower(){
