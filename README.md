@@ -46,21 +46,21 @@ So the IVY device is a smart-vase that has built-in life support for flowers, li
 
 This here is the companion app.
 
-### Notifications
+##### Notifications
 This first tab displays a notifications page that updates the user on the status of their IVY vase, like, "Water half-full". Note that some of these notifications might be action-items for the user to do, like, "Change your filter".
 
-### Calendar
+##### Calendar
 This is the calendar tab, which displays the time frequencies of IVY's various systems. These days are customized based on the flowers that are currently in the vase (which will be explained in the myFlowers section).
 
-### Power
+##### Power
 Moving on, this is the power tab, which updates the user on the battery status of our smart-vase. Pretty self-explanatory.
 
-### MyFlowers
+##### MyFlowers
 Ah, here we go. This is the myFlowers tab, where the user enters their current flower type and quantity. For example, a user could say that they have three flowers, and those 3 flowers consist of roses and tulips.
 Based on these entries, the smart-vase will customize its caretaker settings for flowers in this combination.
 
-### Lighting
+##### Lighting
 And finally, we have the lighting tab. This feature is for aesthetics more than anything else. The design is that the smart-vase can also light up, adding a sort of glow to the flowers that enhances their beauty. We see in the app that if the lighting feature is in the on state, then we can control the brightness level and the hue of the light. And this is all deactivate when we switch to off.
 
-### Conclusion
+##### Conclusion
 So that's IVY! Hope you got something out of it, playas. Flower power!
