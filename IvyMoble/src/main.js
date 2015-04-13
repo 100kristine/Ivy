@@ -9,6 +9,7 @@ var CAL = require('calendar.js');
 
 //@module
 var FLOWERS = require('myflowers.js');
+var POWERTAB = require('powertab.js');
 
 /*Screen stuff*/
 home = true;
@@ -96,15 +97,27 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 /*End Screen Stuff*/
 
 
-/*Start Sean's 4/8 edits server stuff*/
-var Vase_Server;
+/*Start Sean's 4/12 edits server stuff*/
+var VASE_SERVER;
 var VASE_UUID = "";
+var POWERLEVEL = "1";
+
+Handler.bind("/getPowerLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { power: POWERLEVEL } );
+			message.status = 200;
+		},
+	},
+}));
 
 Handler.bind("/discover", Object.create(Behavior.prototype, {
 	onComplete: { value: 
 		function(handler, message, json) {
-			trace("should be gotSomeInfo: " + json.info + "\n");
-			//application.distribute("weGotStuffFromServer");
+			POWERLEVEL = json.power;
+			var message = Vase_Server.createMessage("getPower", { uuid: VASE_UUID });
+			handler.invoke(message, Message.JSON);
+			application.invoke( new Message("/requestPower") );
 		},
 	},
 	onInvoke: { value: 
@@ -112,7 +125,7 @@ Handler.bind("/discover", Object.create(Behavior.prototype, {
 			var discovery = JSON.parse(message.requestText);
 			VASE_UUID = discovery.uuid;
 			Vase_Server = new Server(discovery);
-			var message = Vase_Server.createMessage("getSomeInfoFromVase", { uuid: VASE_UUID });
+			var message = Vase_Server.createMessage("getPower", { uuid: VASE_UUID });
 			handler.invoke(message, Message.JSON);
 		},
 	},
@@ -174,8 +187,8 @@ function makeCal(){
 }
 
 function makePower(){
-	return new Column({name:"power", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	return POWERTAB.getColumn();//new Column({name:"power", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
 }
 
 function makeMyFlowers(){

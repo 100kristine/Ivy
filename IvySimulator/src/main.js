@@ -1,9 +1,11 @@
 // IVY - DEVICE IMPLEMENTATION
 
-Handler.bind("/getSomeInfoFromVase", Object.create(Behavior.prototype, {
+var POWERLEVEL = "0";
+
+Handler.bind("/getPower", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			message.responseText = JSON.stringify( { info: "gotSomeInfo" } );
+			message.responseText = JSON.stringify( { power: POWERLEVEL } );
 			message.status = 200;
 		},
 	},
@@ -22,13 +24,9 @@ var MainContainer = Container.template(function($) { return { left: 0, right: 0,
 MainContainer.behaviors = new Array(1);
 MainContainer.behaviors[0] = Behavior.template({
 	onAnalogValueChanged: function(content, result) {
+		POWERLEVEL = (result*100).toString().substring( 0, 8 );
+		//trace(POWERLEVEL + "\n");
 		content.string = result.toString().substring( 0, 8 );
-	},
-	onLaunch: function(application) {
-		application.shared = true;
-	},
-	onQuit: function(application) {
-		application.shared = false;
 	},
 })
 /* Create message for communication with hardware pins.
@@ -46,6 +44,16 @@ application.invoke( new MessageWithObject( "pins:configure", {
     }
 }));
 
+var ApplicationBehavior = Behavior.template({
+	onLaunch: function(application) {
+		application.shared = true;
+	},
+	onQuit: function(application) {
+		application.shared = false;
+	},
+})
+
+
 /* Use the initialized analogSensor object and repeatedly 
    call its read method with a given interval.  */
 application.invoke( new MessageWithObject( "pins:/analogSensor/read?" + 
@@ -55,7 +63,10 @@ application.invoke( new MessageWithObject( "pins:/analogSensor/read?" +
 		callback: "/gotAnalogResult"
 } ) ) );
 
+application.behavior = new ApplicationBehavior();
 application.add( new MainContainer() );
 
+
+// IVY - DEVICE IMPLEMENTATION
 
 // IVY - DEVICE IMPLEMENTATION
