@@ -6,17 +6,25 @@ var SCROLLER = require('mobile/scroller');
 var POWERLEVEL = "0";
 
 var colorStyle = new Style({ color: 'white', font: 'bold 18px', horizontal: 'center', vertical: 'middle', });
-var whiteSkin = new Skin({fill:"white"});
+var whiteSkin = new Skin({fill:"#4e4e4e"});
 var greenSkin = new Skin({fill:"green"});
 var redSkin = new Skin({fill:"red"});
 var blueSkin = new Skin({fill:"blue"});
 var labelStyle = new Style( { font: "bold 20px", color:"white" } );
-var textStyle = new Style( { font: "bold 16px", color:"black" } );
+var textStyle = new Style( { font: "bold 16px", color:"white" } );
 var whiteBorderSkin = new Skin({
   fill:"white", 
   borders:{left:5, right:5, top:5, bottom:5}, 
   stroke:"black"
 });
+
+function makeLabel(str,sty){
+  return new Label({left:0, right:0, string:str,style:sty});
+}
+var l1 = new Style( { font: "15px", color:"white" } );
+var l2 = new Style( { font: "20px", color:"white" } );
+var l3 = new Style( { font: "50px", color:"white" } );
+
 
 var MySlider = SLIDERS.VerticalSlider.template(function($){ return{
   height:100, left:50, right:50,
@@ -78,7 +86,15 @@ var TopContainer = Container.template(function($) { return { top: 100, width: 25
 ], }});
 
 var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
-    new Label({top: 50, left:0, right:0, height: 40, string: "Battery Life:", style: textStyle}),
+    //new Label({top: 50, left:0, right:0, height: 40, string: "Battery Life:", style: textStyle}),
+    new Line({left:0, right:0, top:0, bottom:100,skin: new Skin({fill:"#9bd91f"}),
+            contents:[
+              makeLabel("lighting",l3)
+            ]
+          }),
+     //new Line({left:0, right:0, top:0, bottom:0,skin: whiteSkin,
+     //       contents:[]
+     //     }),
     Column($, { left: 0, right: 0, top: 0, behavior: Object.create((MainContainer.behaviors[0]).prototype), }),
 ], }});
 MainContainer.behaviors = new Array(1);

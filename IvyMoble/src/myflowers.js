@@ -1,7 +1,7 @@
 //var cool = "test";
 //exports.cool = cool;
 
-var background = "white"; //"#363636"
+var background = "#4e4e4e";//"#90c326"; //"#363636"
 
 
 function activeMYF(button){
@@ -22,20 +22,20 @@ function inactivateAllMYF(currentScreen) {
 
 function updateNumFlowers(str){
 	if (str != "1") {
-		numFlowers[0].string = "My vase contains " + str + " flowers";
+		numFlowers[0].string = "my vase contains " + str + " flowers";
 	}
 	else {
-		numFlowers[0].string = "My vase contains " + str + " flower";
+		numFlowers[0].string = "my vase contains " + str + " flower";
 	}
 }
 
 function updateTypeFlowers(){
 	if (flowerTypes.length == 0){
-		typeFlowers[0].string = "Select flower types to get started!";
+		typeFlowers[0].string = "select flower types to get started!";
 		typeFlowers2[0].string = "";
 	}
 	else {
-		typeFlowers[0].string ="The types of flowers in my vase are:"
+		typeFlowers[0].string ="the types of flowers in my vase are:"
 		typeFlowers2[0].string = flowerTypes.join(", ");
 	}
 }
@@ -167,9 +167,9 @@ function selectableGrid(){
 	return col;
 }
 
-var l1 = new Style( { font: "15px", color:"#9bd91f" } );
-var l2 = new Style( { font: "20px", color:"#9bd91f" } );
-var l3 = new Style( { font: "40px", color:background } );
+var l1 = new Style( { font: "15px", color:"white" } );
+var l2 = new Style( { font: "20px", color:"white" } );
+var l3 = new Style( { font: "50px", color:"white" } );
 
 function makeLabel(str,sty){
 	return new Label({left:0, right:0, string:str,style:sty});
@@ -178,14 +178,15 @@ function makeLabel(str,sty){
 var flowerTypes = [];
 var flowerNum = 0;
 
-var numFlowers = new Line({name:"numFlowers", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
-						contents:[makeLabel("My vase contains 0 flowers.",l2)]})
+var lineColor = background;//"#0f888d";
+var numFlowers = new Line({name:"numFlowers", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:lineColor}),
+						contents:[makeLabel("my vase contains 0 flowers.",l2)]})
 
-var typeFlowers = new Line({name:"typeFlowers", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
-						contents:[makeLabel("Select flower types to get started!",l2),
+var typeFlowers = new Line({name:"typeFlowers", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:lineColor}),
+						contents:[makeLabel("select flower types to get started!",l2),
 						]});
 						
-var typeFlowers2 = new Line({name:"typeFlowers2", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:background}),
+var typeFlowers2 = new Line({name:"typeFlowers2", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:lineColor}),
 						contents:[makeLabel("",l1),
 						]})
 
@@ -195,15 +196,15 @@ function getColumn(){
 	var subgrid = selectableGrid();
 	return new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:background}), 
 				contents:[
-					new Line({name:"title", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"}),
-						contents:[makeLabel("My Flowers",l3)]}),
+					new Line({name:"title", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#9bd91f"}),
+						contents:[makeLabel("my flowers",l3)]}),
 					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//new Line({name:"heading", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
 					//	contents:[makeLabel("Number of Flowers in Vase",l2)]}),
 					,numFlowers,
 					
 					flowerAmounts,
-					new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
+					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//new Line({name:"labels", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"black"}),
 					//	contents:[makeLabel("None",l1),makeLabel("One",l1),makeLabel("Few",l1),makeLabel("Many",l1)]}),
 					

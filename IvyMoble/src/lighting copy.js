@@ -233,7 +233,7 @@ function getColumn(){
 					onoffStatusLabel,
 					//numFlowers,
 					onoffStatus,
-					//mainCanvas,
+					mainCanvas,
 					plantPicture,
 					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//typeFlowers,
