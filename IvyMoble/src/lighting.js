@@ -89,7 +89,9 @@ function drawHeart() {
 	      ctx.arc(x[i], y[i], ra[i], 0, 2 * Math.PI, false);
 	      ctx.fillStyle = color;
 	      ctx.fill();
+	      
 	}
+	ctx.drawImage(hiresPic,0,0,100,150);
     //ctx.fillStyle = "black";
 	//trace(mainCanvas.width);
 	//ctx.fillRect( 0,0,mainCanvas.width,mainCanvas.height);
