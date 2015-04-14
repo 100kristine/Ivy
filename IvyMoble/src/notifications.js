@@ -76,7 +76,7 @@ contents:[n]});
 	//var col = 
 var buttonArr = [];
 
-var column = new Container({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"4e4e4e"}), contents:[new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"#363636"}), 
+var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"4e4e4e"}), contents:[new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"#363636"}), 
 				contents:[
 					new Line({name:"title", left:0, right:0, top:0, height:60, skin: new Skin({fill:"#9bd91f"}),
 						contents:[makeLabel("Home",l3)]}),
