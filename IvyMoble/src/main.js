@@ -11,6 +11,7 @@ var CAL = require('calendar.js');
 var POWERTAB = require('powertab.js');
 var FLOWERS = require('myflowers.js');
 var LIGHTING = require('lighting.js');
+var NOTIFICATION = require('notifications.js');
 
 /*Screen stuff*/
 home = true;
@@ -177,8 +178,9 @@ var lightsButton = new MyButtonTemplate({url:"lights.png",name:"lights"});
 
 
 function makeHome(){
-	return new Column({name:"home", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	//return new Column({name:"home", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
+	return NOTIFICATION.getColumn();
 }
 
 function makeCal(){

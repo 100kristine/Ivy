@@ -82,7 +82,7 @@ function drawHeart() {
     var y = [10,60,40,10,50,20,20,10,70,90,10,70,90];
     var ra = [5,2,3,4,7,9,3,7,9,3,7,9,3];
     var color = "rgb("+[r,g,b].join(",")+")";
-    trace(color);
+    //trace(color);
     
     for(i=0; i<x.length; i++) {
 			ctx.beginPath();
@@ -221,15 +221,15 @@ var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
 	behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
 		onValueChanged: { value: function(container){
     		SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
-    		trace("Value is: " + this.data.value + "\n");
+    		//trace("Value is: " + this.data.value + "\n");
     		var scale = (this.data.value/50);
     		r = (r*scale<1) ? 255: Math.round(.2*r*scale);
     		b = (b*scale<1) ? 255: Math.round(.3*b*scale);
     		g = (g*scale<1) ? 255: Math.round(.01*g*scale);
-    		trace(r+" ");
-    		trace(b+" ");
-    		trace(g+" ");
-    		trace("colors");
+    		//trace(r+" ");
+    		//trace(b+" ");
+    		//trace(g+" ");
+    		//trace("colors");
     		drawHeart();
     		
     	}}
