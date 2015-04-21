@@ -21,7 +21,7 @@
 	<function id="configure" params="configuration"><![CDATA[
 		this.pinsSimulator = shell.delegate("addSimulatorPart", {
 			header : { 
-				label : "Analog", 
+				label : "Power Level", 
 				name : "Analog Input", 
 				iconVariant : PinsSimulators.SENSOR_KNOB 
 			},

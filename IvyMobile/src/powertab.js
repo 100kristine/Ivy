@@ -139,7 +139,7 @@ MainContainer.behaviors[1] = Behavior.template({
     if (parseInt(POWERLEVEL) < 21) {
       STATUS = "Low Battery";
     }
-  	column.string = STATUS;
+  	column.string ="Status: " + STATUS;
   	//column.first.string = "string";
   },
 

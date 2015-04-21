@@ -83,10 +83,10 @@ application.invoke( new MessageWithObject( "pins:configure", {
     		hue: 		{ pin: 47 }
 		},
 	},
-	button: {
-        require: "button",
+	solarPower: {
+        require: "solarPower",
         pins: {
-            button: { pin: 42 }
+            solarPower: { pin: 42 }
         },
     },
     analogSensor: {
@@ -108,7 +108,7 @@ var ApplicationBehavior = Behavior.template({
 
 
 
-application.invoke( new MessageWithObject( "pins:/button/read?" + 
+application.invoke( new MessageWithObject( "pins:/solarPower/read?" + 
 	serializeQuery( {
 		repeat: "on",
 		interval: 20,
