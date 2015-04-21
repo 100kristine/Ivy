@@ -59,6 +59,7 @@ Handler.bind("/requestPower", Object.create(Behavior.prototype, {
   onComplete: { value: 
     function(handler, message, json) {
       POWERLEVEL = json.power;
+      STATUS = json.status;
       application.distribute("onDevicesChanged");
     },
   },
@@ -93,12 +94,14 @@ var MainContainer = Container.template(function($) { return { left: 0, right: 0,
               makeLabel("power",l3)
             ]
           }),
-     //new Line({left:0, right:0, top:0, bottom:0,skin: whiteSkin,
-     //       contents:[]
-     //     }),
+     new Line({left:0, right:0, top:0, bottom:0,skin: whiteSkin,
+           contents:[
+           	  new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
+           ]
+          }),
     Column($, { left: 0, right: 0, top: 0, behavior: Object.create((MainContainer.behaviors[0]).prototype), }),
 ], }});
-MainContainer.behaviors = new Array(1);
+MainContainer.behaviors = new Array(2);
 MainContainer.behaviors[0] = Behavior.template({
   onCreate: function(column, data) {
     this.onDevicesChanged( column );
@@ -108,23 +111,41 @@ MainContainer.behaviors[0] = Behavior.template({
     this.build( column );
   },
   build: function(column) {
-  	STATUS = "Charging";
+  	//trace(STATUS + "\n");
+  	//STATUS = "Charging";
     var topSkin = new Skin( "black" );
     if (POWERLEVEL == "100") {
       var topSkin = new Skin( "green" );
-      STATUS = "Fully Charged";
+      //STATUS = "Fully Charged";
     }
     var changingSkin = new Skin( "green" );
     if (parseInt(POWERLEVEL) < 21) {
       var changingSkin = new Skin( "red" );
-      STATUS = "Low Battery";
+      //STATUS = "Low Battery";
     }
     column.add( new TopContainer( { skin: topSkin } )  );
     column.add( new OuterContainer );
     column.add( new ChangingContainer( { skin: changingSkin } ) );
+    //column.add( new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle}),);
     
   },
 })
+MainContainer.behaviors[1] = Behavior.template({
+  onDevicesChanged: function(column, content) {
+  //debugger
+    if (POWERLEVEL == "100") {
+      STATUS = "Fully Charged";
+    }
+    if (parseInt(POWERLEVEL) < 21) {
+      STATUS = "Low Battery";
+    }
+  	column.string = STATUS;
+  	//column.first.string = "string";
+  },
+
+})
+
+
 
 var mainContainer = new MainContainer();
 
@@ -133,7 +154,8 @@ var mainColumn = new Column({
   skin: whiteSkin,
   contents:[
     mainContainer,
-    new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle}),
+    
+   //new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle}),
   ]
 });
 

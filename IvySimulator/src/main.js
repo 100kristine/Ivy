@@ -1,14 +1,14 @@
 // IVY - DEVICE IMPLEMENTATION
 
 var POWERLEVEL = "0";
-var BATTERYSTATUS = "Not Charging";
+var STATUS = "None";
 
 var ButtonStyle = new Style({ color: 'black', font: 'bold 50px', horizontal: 'null', vertical: 'null', });
 
 Handler.bind("/getPower", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			message.responseText = JSON.stringify( { power: POWERLEVEL } );
+			message.responseText = JSON.stringify( { power: POWERLEVEL, status: STATUS } );
 			message.status = 200;
 		},
 	},
@@ -20,12 +20,13 @@ Handler.bind("/gotButtonResult", Object.create(Behavior.prototype, {
 			/* This handler recieves repeated messages from the read 
             	   method defined in the bll (button.js). Use the return
             	   message's requestObject to access the read result. */             
-                 var readResult = message.requestObject;            
-                 if ( readResult == false ) {               
-                    application.distribute( "clickedOff" );
+                 var readResult = message.requestObject;           
+                 if ( readResult == "0" ) {  
+                 	STATUS = "Not Charging";             
                  } else {
-                 	application.distribute( "clickedOn" );
+                 	STATUS = "Charging";
                  }
+                 application.distribute( "clickedOn" );
 		},
 	},
 }));
@@ -46,26 +47,26 @@ Handler.bind("/gotLightingSensorsResult", Object.create(Behavior.prototype, {
 
 
 var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}), contents: [
-	Label($, { left: 0, right: 0, top: 0, style: ButtonStyle, string: BATTERYSTATUS, name: "status", }),
+
+	Label($, { left: 0, right: 0, top: 0,
+	style: new Style({ color: 'black', font: '40px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '- - -', }),
+
 	Label($, { left: 0, right: 0, 
 	style: new Style({ color: 'black', font: '46px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '- - -', }),
 ], }});
-MainContainer.behaviors = new Array(1);
+MainContainer.behaviors = new Array(2);
 MainContainer.behaviors[0] = Behavior.template({
 	onAnalogValueChanged: function(content, result) {
 		POWERLEVEL = (result*100).toString().substring( 0, 8 );
 		//trace(POWERLEVEL + "\n");
 		content.string = result.toString().substring( 0, 8 );
 	},
-	clickedOn: function(container) {
-        BATTERYSTATUS = "Charging";
-        //trace("charging\n");
-        //container.status.string = BATTERYSTATUS;
-	},
-	clickedOff: function(container) {
-        BATTERYSTATUS = "Not Charging";
-        //trace("not\n");
-       	//MainContainer.status.string = BATTERYSTATUS;
+})
+
+MainContainer.behaviors[1] = Behavior.template({
+	clickedOn: function(content) {
+        content.string = STATUS;
+        //trace(STATUS + "\n");
 	},
 })
 /* Create message for communication with hardware pins.
@@ -107,7 +108,7 @@ var ApplicationBehavior = Behavior.template({
 
 
 
-application.invoke( new MessageWithObject( "pins:/button/wasPressed?" + 
+application.invoke( new MessageWithObject( "pins:/button/read?" + 
 	serializeQuery( {
 		repeat: "on",
 		interval: 20,

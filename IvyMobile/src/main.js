@@ -99,15 +99,16 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 /*End Screen Stuff*/
 
 
-/*Start Sean's 4/12 edits server stuff*/
+/*Start Sean's 4/20 edits server stuff*/
 var VASE_SERVER;
 var VASE_UUID = "";
 var POWERLEVEL = "1";
+var STATUS = "connecting...";
 
 Handler.bind("/getPowerLevel", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			message.responseText = JSON.stringify( { power: POWERLEVEL } );
+			message.responseText = JSON.stringify( { power: POWERLEVEL, status: STATUS } );
 			message.status = 200;
 		},
 	},
@@ -117,6 +118,7 @@ Handler.bind("/discover", Object.create(Behavior.prototype, {
 	onComplete: { value: 
 		function(handler, message, json) {
 			POWERLEVEL = json.power;
+			STATUS = json.status;
 			var message = Vase_Server.createMessage("getPower", { uuid: VASE_UUID });
 			handler.invoke(message, Message.JSON);
 			application.invoke( new Message("/requestPower") );
