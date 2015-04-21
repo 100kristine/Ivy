@@ -8,7 +8,7 @@ var configure = exports.configure = function(configuration) {
 	this.pinsSimulator = shell.delegate("addSimulatorPart", {
 			header : { 
 				label : "Lighting Activities", 
-				//name : "Marley's 3 Activities", 
+				name : "Brightness and Hue", 
 				iconVariant : PinsSimulators.SENSOR_KNOB 
 			},
 			axes : [
@@ -16,7 +16,7 @@ var configure = exports.configure = function(configuration) {
 					{
 						valueLabel : "Brightness",
 						valueID : "brightnessValue",
-						speed : 0
+						speed : 0.2
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(

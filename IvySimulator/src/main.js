@@ -30,13 +30,21 @@ Handler.bind("/gotButtonResult", Object.create(Behavior.prototype, {
 	},
 }));
 
-
 Handler.bind("/gotAnalogResult", Object.create(Behavior.prototype, {
 	onInvoke: { value: function( handler, message ){
         		var result = message.requestObject;  
         		application.distribute( "onAnalogValueChanged", result ); 		
         	}}
 }));
+
+Handler.bind("/gotLightingSensorsResult", Object.create(Behavior.prototype, {
+	onInvoke: { value: function( handler, message ){
+        		var result = message.requestObject;  
+        		application.distribute( "onLightingSensorsValueChanged", result ); 		
+        	}}
+}));
+
+
 var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}), contents: [
 	Label($, { left: 0, right: 0, top: 0, style: ButtonStyle, string: BATTERYSTATUS, name: "status", }),
 	Label($, { left: 0, right: 0, 
@@ -67,16 +75,23 @@ MainContainer.behaviors[0] = Behavior.template({
   	   	 with the given pin numbers. Pin types and directions
   		 are set within the bll.	*/
 application.invoke( new MessageWithObject( "pins:configure", {
-	analogSensor: {
-        require: "analog",
-        pins: {
-            analog: { pin: 52 }
-        },
-    },
-    button: {
+	lightingSensors: {
+    	require: "lightingSensors",
+    	pins: {
+    		brightness: { pin: 48 },
+    		hue: 		{ pin: 47 }
+		},
+	},
+	button: {
         require: "button",
         pins: {
-            button: { pin: 62 }
+            button: { pin: 42 }
+        },
+    },
+    analogSensor: {
+        require: "analog",
+        pins: {
+            analog: { pin: 38 }
         },
     },
 }));
@@ -93,11 +108,18 @@ var ApplicationBehavior = Behavior.template({
 
 
 application.invoke( new MessageWithObject( "pins:/button/wasPressed?" + 
-            serializeQuery( {       
-				repeat: "on",
-				interval: 20,
-				callback: "/gotButtonResult"
-        })));  
+	serializeQuery( {
+		repeat: "on",
+		interval: 20,
+		callback: "/gotButtonResult"
+} ) ) );
+
+application.invoke( new MessageWithObject( "pins:/lightingSensors/read?" + 
+	serializeQuery( {
+		repeat: "on",
+		interval: 20,
+		callback: "/gotLightingSensorsResult"
+} ) ) );
 
 /* Use the initialized analogSensor object and repeatedly 
    call its read method with a given interval.  */
