@@ -50,7 +50,6 @@ Handler.bind("/delay", Object.create(Behavior.prototype, {
   },
   onComplete: { value: 
     function(handler, message) {
-      //handler.invoke( new Message( "/requestPower" ) );
     },
   },
 }));
