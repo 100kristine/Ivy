@@ -2,15 +2,22 @@
 
 var POWERLEVEL = "0";
 var WATERLEVEL = "0";
+var FILTERLEVEL = "0";
+var FOODLEVEL = "0";
 var SOLARSTATUS = "None";
 var WATERSTATUS = "None";
+var FILTERSTATUS = "none";
+var FOODSTATUS = "None";
 
 var ButtonStyle = new Style({ color: 'black', font: 'bold 50px', horizontal: 'null', vertical: 'null', });
 
-Handler.bind("/getPower", Object.create(Behavior.prototype, {
+Handler.bind("/getData", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			message.responseText = JSON.stringify( { power: POWERLEVEL, status: SOLARSTATUS } );
+			message.responseText = JSON.stringify( { power: POWERLEVEL, status: SOLARSTATUS, 
+													 water: WATERLEVEL, waterStatus: WATERSTATUS, 
+													 filter: FILTERLEVEL, filterStatus: FILTERSTATUS, 
+													 food: FOODLEVEL, foodStatus: FOODSTATUS, } );
 			message.status = 200;
 		},
 	},
@@ -29,7 +36,9 @@ Handler.bind("/gotPowerWaterResult", Object.create(Behavior.prototype, {
 	onInvoke: { value: function( handler, message ){
         		var result = message.requestObject;  
         		application.distribute( "onPowerChanged", result.powerValue ); 
-        		application.distribute( "onWaterChanged", result.waterValue );		
+        		application.distribute( "onWaterChanged", result.waterValue );	
+        		application.distribute( "onFilterChanged", result.filterValue ); 
+        		application.distribute( "onFoodChanged", result.foodValue );		
         	}}
 }));
 
@@ -43,17 +52,23 @@ Handler.bind("/gotLightingSensorsResult", Object.create(Behavior.prototype, {
 
 var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}), contents: [
 
+	Label($, { left: 0, right: 0, top: 25,
+	style: new Style({ color: 'black', font: '26px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[3]).prototype), string: '- - -', }),
+	
+	Label($, { left: 0, right: 0, top: 50,
+	style: new Style({ color: 'black', font: '26px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[4]).prototype), string: '- - -', }),
+	
 	Label($, { left: 0, right: 0, top: 0,
-	style: new Style({ color: 'black', font: '40px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '- - -', }),
+	style: new Style({ color: 'black', font: '20px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '- - -', }),
 
 	Label($, { left: 0, right: 0, 
-	style: new Style({ color: 'black', font: '46px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '- - -', }),
+	style: new Style({ color: 'black', font: '26px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '- - -', }),
 	
 	Label($, { left: 0, right: 0, bottom: 0,
-	style: new Style({ color: 'black', font: '40px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[2]).prototype), string: '- - -', }),
+	style: new Style({ color: 'black', font: '20px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[2]).prototype), string: '- - -', }),
 ], }});
 
-MainContainer.behaviors = new Array(3);
+MainContainer.behaviors = new Array(5);
 MainContainer.behaviors[0] = Behavior.template({
 	onPowerChanged: function(content, result) {
 		POWERLEVEL = (result*100).toString().substring( 0, 8 );
@@ -85,6 +100,34 @@ MainContainer.behaviors[2] = Behavior.template({
         content.string = WATERSTATUS;
 	},
 })
+
+MainContainer.behaviors[3] = Behavior.template({
+	onFilterChanged: function(content, result) {
+		FILTERLEVEL = (result*100).toString().substring( 0, 8 );
+		if (parseInt(FILTERLEVEL) < 51) {
+			FILTERSTATUS = "Dirty Filter";
+		} if (parseInt(FILTERLEVEL) > 50) {
+			FILTERSTATUS = "Clean";
+		} if (parseInt(FILTERLEVEL) == 0) {
+			FILTERSTATUS = "Change now!";
+		} 
+        content.string = FILTERSTATUS;
+	},
+})
+
+MainContainer.behaviors[4] = Behavior.template({
+	onFoodChanged: function(content, result) {
+		FOODLEVEL = (result*100).toString().substring( 0, 8 );
+		if (parseInt(FOODLEVEL) < 51) {
+			FOODSTATUS = "Low Food";
+		} if (parseInt(FOODLEVEL) > 50) {
+			FOODSTATUS = "Plenty of Food";
+		} if (parseInt(FOODLEVEL) == 0) {
+			FOODSTATUS = "No Food";
+		} 
+        content.string = FOODSTATUS;
+	},
+})
 /* Create message for communication with hardware pins.
    analogSensor: name of pins object, will use later for calling 'analogSensor' methods.
    require: name of js or xml bll file.
@@ -109,7 +152,9 @@ application.invoke( new MessageWithObject( "pins:configure", {
         require: "analog",
         pins: {
             power: { pin: 38 },
-            water: { pin: 37 }
+            water: { pin: 37 },
+            filter: { pin: 38 },
+            food: { pin: 37 }
         },
     },
 }));

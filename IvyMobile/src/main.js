@@ -105,10 +105,46 @@ var VASE_UUID = "";
 var POWERLEVEL = "1";
 var STATUS = "connecting...";
 
+var WATERLEVEL = "2";
+var WATERSTATUS = "Nones";
+var FILTERSTATUS = "none";
+var FOODSTATUS = "None";
+var FILTERLEVEL = "0";
+var FOODLEVEL = "0";
+
+
 Handler.bind("/getPowerLevel", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
 			message.responseText = JSON.stringify( { power: POWERLEVEL, status: STATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+
+Handler.bind("/getWaterLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { water: WATERLEVEL, waterStatus: WATERSTATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+Handler.bind("/getFoodLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { food: FOODLEVEL, foodStatus: FOODSTATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+Handler.bind("/getFilterLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { filter: FILTERLEVEL, filterStatus: FILTERSTATUS } );
 			message.status = 200;
 		},
 	},
@@ -119,9 +155,17 @@ Handler.bind("/discover", Object.create(Behavior.prototype, {
 		function(handler, message, json) {
 			POWERLEVEL = json.power;
 			STATUS = json.status;
-			var message = Vase_Server.createMessage("getPower", { uuid: VASE_UUID });
+			WATERLEVEL = json.water;
+			WATERSTATUS = json.waterStatus;
+			FILTERSTATUS = json.filterStatus;
+			FOODSTATUS = json.foodStatus;
+			FILTERLEVEL = json.filter;
+			FOODLEVEL = json.food;
+			var message = Vase_Server.createMessage("getData", { uuid: VASE_UUID });
 			handler.invoke(message, Message.JSON);
 			application.invoke( new Message("/requestPower") );
+			application.invoke( new Message("/requestWater") );
+			/*invoke application request[insert] here to invoke in another tab */
 		},
 	},
 	onInvoke: { value: 
@@ -129,7 +173,7 @@ Handler.bind("/discover", Object.create(Behavior.prototype, {
 			var discovery = JSON.parse(message.requestText);
 			VASE_UUID = discovery.uuid;
 			Vase_Server = new Server(discovery);
-			var message = Vase_Server.createMessage("getPower", { uuid: VASE_UUID });
+			var message = Vase_Server.createMessage("getData", { uuid: VASE_UUID });
 			handler.invoke(message, Message.JSON);
 		},
 	},

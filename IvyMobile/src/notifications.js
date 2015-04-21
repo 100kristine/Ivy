@@ -35,6 +35,29 @@ var logoSkin = new Skin({
 });
 
 
+/* Seans changes */
+var WATERLEVEL = "none";
+var WATERSTATUS = "nonnne";
+
+Handler.bind("/requestWater", Object.create(Behavior.prototype, {
+  onComplete: { value: 
+    function(handler, message, json) {
+      WATERLEVEL = json.water;
+      WATERSTATUS = json.waterStatus;
+      application.distribute("onWaterChanged");
+    },
+  },
+  onInvoke: { value: 
+    function(handler, message) {
+      handler.invoke( new Message("/getWaterLevel"), Message.JSON );
+    },
+  },
+}));
+
+
+/* Seans changes */
+
+
 
 
 var l1 = new Style( { font: "22px", color:"white" } );
@@ -94,9 +117,7 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 				//	new Line({name:"padding", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"red"}),
 					//	contents:[]}),
 				
-				]})], behavior:
-Object.create(Behavior.prototype, {
-		
+				]})], behavior: Object.create(Behavior.prototype, {
 	onCreate: { value: function(application, data){
 		makeNotifs();
 		var z;
@@ -119,10 +140,7 @@ Object.create(Behavior.prototype, {
 		}
 		//col.add(new Line({top:6, height: 45, left:0, right:0, name: "line", skin:new Skin({fill:"#939393"}), 
 		//contents:[makeLabel("No notifications!", l1));
-		
-		
-		
-	}}
+	}},
 	
 }) });
 
