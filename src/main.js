@@ -1,9 +1,17 @@
-//@program
+// IVY - MOBILE APP
+
 var THEME = require("themes/flat/theme");
 var BUTTONS = require("controls/buttons");
 var CONTROL = require("mobile/control");
 //var PinsSimulators = require ("PinsSimulators");
 var SLIDERS = require('controls/sliders');
+
+//@module
+var CAL = require('calendar.js');
+var POWERTAB = require('powertab.js');
+var FLOWERS = require('myflowers.js');
+var LIGHTING = require('lighting.js');
+var NOTIFICATION = require('notifications.js');
 
 /*Screen stuff*/
 home = true;
@@ -11,7 +19,7 @@ currentScreen = "start";
 
 var whiteSkin = new Skin( { fill:"white" } );
 var greenSkin = new Skin({fill:"green"});
-var redSkin = new Skin({fill:"red"});
+var redSkin = new Skin({fill:"#1eaf5f"});
 var blueSkin = new Skin({fill:"blue"});
 
 var mainColumn = new Column({
@@ -90,6 +98,122 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 }});
 /*End Screen Stuff*/
 
+
+/*Start Sean's 4/20 edits server stuff*/
+var VASE_SERVER;
+var VASE_UUID = "";
+var POWERLEVEL = "1";
+var STATUS = "connecting...";
+
+var WATERLEVEL = "2";
+var WATERSTATUS = "Nones";
+var FILTERSTATUS = "none";
+var FOODSTATUS = "None";
+var FILTERLEVEL = "0";
+var FOODLEVEL = "0";
+
+
+Handler.bind("/getPowerLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { power: POWERLEVEL, status: STATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+
+Handler.bind("/getWaterLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { water: WATERLEVEL, waterStatus: WATERSTATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+Handler.bind("/getFoodLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { food: FOODLEVEL, foodStatus: FOODSTATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+Handler.bind("/getFilterLevel", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			message.responseText = JSON.stringify( { filter: FILTERLEVEL, filterStatus: FILTERSTATUS } );
+			message.status = 200;
+		},
+	},
+}));
+
+Handler.bind("/discover", Object.create(Behavior.prototype, {
+	onComplete: { value: 
+		function(handler, message, json) {
+			POWERLEVEL = json.power;
+			STATUS = json.status;
+			WATERLEVEL = json.water;
+			WATERSTATUS = json.waterStatus;
+			FILTERSTATUS = json.filterStatus;
+			FOODSTATUS = json.foodStatus;
+			FILTERLEVEL = json.filter;
+			FOODLEVEL = json.food;
+			var message = Vase_Server.createMessage("getData", { uuid: VASE_UUID });
+			handler.invoke(message, Message.JSON);
+			application.invoke( new Message("/requestPower") );
+			application.invoke( new Message("/requestWater") );
+			/*invoke application request[insert] here to invoke in another tab */
+		},
+	},
+	onInvoke: { value: 
+		function(handler, message) {
+			var discovery = JSON.parse(message.requestText);
+			VASE_UUID = discovery.uuid;
+			Vase_Server = new Server(discovery);
+			var message = Vase_Server.createMessage("getData", { uuid: VASE_UUID });
+			handler.invoke(message, Message.JSON);
+		},
+	},
+}));
+
+var Server = function(discovery) {
+			this.url = discovery.url;
+			this.id = discovery.id;
+			this.protocol = discovery.protocol;
+			this.uuid = discovery.uuid;
+			this.color = "";
+		};
+		Server.prototype = Object.create(Object.prototype, {
+			url: { value: undefined, enumerable: true, writable: true },
+			id: { value: undefined, enumerable: true, writable: true },
+			protocol: { value: undefined, enumerable: true, writable: true },
+			uuid: { value: undefined, enumerable: true, writable: true },
+			createMessage: { value:
+				function(name, query) {
+					var url = this.url + name;
+					if (query)
+						url += "?" + serializeQuery(query);
+					return new Message(url);
+				}
+			}
+		});
+		
+var ApplicationBehavior = Behavior.template({
+	onLaunch: function(application) {
+	},
+	onDisplayed: function(application) {
+		application.discover("ivy_simulator");
+	},
+	onQuit: function(application) {
+	},
+})
+/*End Sean's 4/8 edits server stuff*/
+
+
+
 var buttons = [homeButton, calButton, powerButton, flowerButton, lightsButton];
 
 var homeButton = new MyButtonTemplate({url:"home.png",name:"home"});
@@ -100,31 +224,34 @@ var lightsButton = new MyButtonTemplate({url:"lights.png",name:"lights"});
 
 
 function makeHome(){
-	return new Column({name:"home", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	//return new Column({name:"home", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
+	return NOTIFICATION.getColumn();
 }
 
 function makeCal(){
-	return new Column({name:"cal", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	// return new Column({name:"cal", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+	// 			contents:[]});
+	return CAL.getColumn();
 }
 
 function makePower(){
-	return new Column({name:"power", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	return POWERTAB.getColumn();//new Column({name:"power", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
 }
 
 function makeMyFlowers(){
-	return new Column({name:"flower", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	return FLOWERS.getColumn();//new Column({name:"flower", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
 }
 
 function makeLights(){
-	return new Column({name:"lights", left:0, right:0, top:10, bottom:100, skin: new Skin({fill:"black"}), 
-				contents:[]});
+	return LIGHTING.getColumn();//return new Column({name:"lights", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
 }
 
-var menu = new Line({left:0, right:0, top:375, bottom:0,skin:redSkin, 
+
+var menu = new Line({left:0, right:0, height:100, bottom:0,skin:redSkin, 
 		contents:[homeButton,calButton,powerButton,flowerButton,lightsButton]
 	});
 
@@ -137,7 +264,9 @@ var lightsScreen = makeLights();
 
 
 mainColumn.add(homeScreen);
-//application.behavior = new ApplicationBehavior();
+application.behavior = new ApplicationBehavior();
 application.add(mainColumn);
 application.add(menu);
-	
+
+
+// IVY - MOBILE APP	
