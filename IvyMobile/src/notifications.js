@@ -127,7 +127,9 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 		
 				var num = buttonArr.indexOf(button);
 				column.flower.notifications.n.empty(num, num+1)
-				buttonArr.splice(num, 1)
+				buttonArr.splice(num, 1);
+				notifList.splice(num, 1);
+				lineList.splice(num, 1);
 				if (buttonArr.length == 0) {
 					column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
 				}
@@ -142,9 +144,10 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 	}},
 	
 	onWaterChanged: { value: function(application, data){
-		trace("line: " + lineList.length + "\n");
-		trace("notif: " + notifList.length + "\n");
-		if (notifList.length < 5) {
+		//trace("line: " + lineList + "\n");
+		//trace("notif: " + notifList + "\n");
+		//trace("button: " + buttonArr + "\n");
+		if (false) {
 			notifList.push(WATERSTATUS);
 			var l = makeLine(i)
 			n.add(l)
@@ -156,7 +159,9 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 				onTap: { value:  function(button){
 				var num = buttonArr.indexOf(button);
 				column.flower.notifications.n.empty(num, num+1)
-				buttonArr.splice(num, 1)
+				buttonArr.splice(num, 1);
+				notifList.splice(num, 1);
+				lineList.splice(num, 1);
 				if (buttonArr.length == 0) {
 					column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
 				}					
