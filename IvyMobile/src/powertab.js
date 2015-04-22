@@ -13,11 +13,6 @@ var redSkin = new Skin({fill:"red"});
 var blueSkin = new Skin({fill:"blue"});
 var labelStyle = new Style( { font: "bold 20px", color:"white" } );
 var textStyle = new Style( { font: "bold 16px", color:"white" } );
-var whiteBorderSkin = new Skin({
-  fill:"white", 
-  borders:{left:5, right:5, top:5, bottom:5}, 
-  stroke:"black"
-});
 
 function makeLabel(str,sty){
   return new Label({left:0, right:0, string:str,style:sty});
@@ -88,16 +83,18 @@ var TopContainer = Container.template(function($) { return { top: 100, width: 25
 
 var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
     //new Label({top: 50, left:0, right:0, height: 40, string: "Battery Life:", style: textStyle}),
-    new Line({left:0, right:0, top:0, bottom:100,skin: new Skin({fill:"#9bd91f"}),
+    new Column({left:0, right:0, top:0, bottom:380,skin: new Skin({fill:"#9bd91f"}),
             contents:[
-              makeLabel("power",l3)
+              //makeLabel("power",l3), 
+              new Label({ left:0, right:0, top: 5, height: 40, string: "Power", style: textStyle, }),
+              //new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
             ]
           }),
-     new Line({left:0, right:0, top:0, bottom:0,skin: whiteSkin,
+     new Column({left:0, right:0, bottom:70,skin: whiteSkin,
            contents:[
-           	  new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
-           ]
-          }),
+           	  new Label({bottom: 100, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
+          ]
+         }),
     Column($, { left: 0, right: 0, top: 0, behavior: Object.create((MainContainer.behaviors[0]).prototype), }),
 ], }});
 MainContainer.behaviors = new Array(2);

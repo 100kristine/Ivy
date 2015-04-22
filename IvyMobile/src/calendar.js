@@ -27,7 +27,7 @@ var waterSchedLabel = new Label({left:220, string: "3 days", style: labelStyle})
 
 function getColumn(){
 	return new Column({name:"calendar", left:0, right:0,
-				top:20, bottom:100, skin: whiteSkin,
+				top:0, bottom:100, skin: whiteSkin,
 	contents:[
 		new Line({name:"title", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#9bd91f"}),
 						contents:[makeLabel("schedule",new Style( { font: "50px", color:"white" } ))]}),

@@ -88,7 +88,6 @@ function makeNotifs(){
 		var l = makeLine(i)
 		n.add(l)
 		lineList.push(l);
-		
 	}
 }
 	
@@ -141,6 +140,37 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 		//col.add(new Line({top:6, height: 45, left:0, right:0, name: "line", skin:new Skin({fill:"#939393"}), 
 		//contents:[makeLabel("No notifications!", l1));
 	}},
+	
+	onWaterChanged: { value: function(application, data){
+		trace("line: " + lineList.length + "\n");
+		trace("notif: " + notifList.length + "\n");
+		if (notifList.length < 5) {
+			notifList.push(WATERSTATUS);
+			var l = makeLine(i)
+			n.add(l)
+			lineList.push(l);
+			
+			
+			var b = new deleteButton({name:"deleteButton",
+			behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+				onTap: { value:  function(button){
+				var num = buttonArr.indexOf(button);
+				column.flower.notifications.n.empty(num, num+1)
+				buttonArr.splice(num, 1)
+				if (buttonArr.length == 0) {
+					column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+				}					
+				}}
+			})
+			})
+			lineList[notifList.length -1].add(b)
+			buttonArr.push(b)
+		}
+
+		//col.add(new Line({top:6, height: 45, left:0, right:0, name: "line", skin:new Skin({fill:"#939393"}), 
+		//contents:[makeLabel("No notifications!", l1));
+	}},
+	
 	
 }) });
 
