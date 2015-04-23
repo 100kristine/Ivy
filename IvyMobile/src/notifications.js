@@ -21,8 +21,8 @@ var blueSkin = new Skin({fill:"blue"});
 
 
 var blue = new Skin({fill:"blue"});
-var green = new Skin({fill:"#9bd91f"});
-var black= new Skin({fill:"#4e4e4e"});
+var green = new Skin({fill:"#1eaf5f"});
+var black= new Skin({fill:"#ea557b"});
 
 var notifList = ["Water is half full", "Change your filter", "Add food to vase", "Water was filtered"];
 var lineList = [];
@@ -60,10 +60,10 @@ Handler.bind("/requestWater", Object.create(Behavior.prototype, {
 
 
 
-var l1 = new Style( { font: "22px", color:"white" } );
-var l2 = new Style( { font: "25px", color:"#9bd91f" } );
-var l3 = new Style( { font: "50px", color:"white" } );
-var nStyle = new Style({font: "15px", color:"white"});
+var l1 = new Style( { font: "22px Avenir", color:"white" } );
+var l2 = new Style( { font: "25px Avenir", color:"white" } );
+var l3 = new Style( { font: "55px Avenir", color:"white" } );
+var nStyle = new Style({font: "15px Avenir", color:"white"});
 
 function makeLabel(str,sty){
 	return new Label({top:15, left:0, right:0, string:str,style:sty});
@@ -80,7 +80,7 @@ function makeLine(x){
 	
 	]})}
 var i;
-var n= new Column({left:0, top: 5, right:0, skin:new Skin({fill:"#4e4e4e"}), name:"n",
+var n= new Column({left:0, top: 5, right:0, skin:new Skin({fill:"#ea557b"}), name:"n",
 contents:[]});
 
 function makeNotifs(){
@@ -92,21 +92,21 @@ function makeNotifs(){
 }
 	
 
-var notifications = new Column({left:0, top: 0, right:0, height: 500, skin:new Skin({fill:"#4e4e4e"}), name:"notifications",
+var notifications = new Column({left:0, top: 0, right:0, height: 500, skin:new Skin({fill:"#ea557b"}), name:"notifications",
 contents:[n]});
 
 	//var col = 
 var buttonArr = [];
 
-var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"4e4e4e"}), contents:[new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"#363636"}), 
+var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"#ea557b"}), contents:[new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"#363636"}), 
 				contents:[
-					new Line({name:"title", left:0, right:0, top:0, height:60, skin: new Skin({fill:"#9bd91f"}),
+					new Line({name:"title", left:0, right:0, top:-10, height:60, skin: new Skin({fill:"#1eaf5f"}),
 						contents:[makeLabel("Home",l3)]}),
-					new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#9bd91f"})}),
-					new Line({name:"heading", left:0, right:0, top:0, height:40, skin: new Skin({fill:"#4e4e4e"}),
+					new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#1eaf5f"})}),
+					new Line({name:"heading", left:0, right:0, top:0, height:40, skin: new Skin({fill:"#ea557b"}),
 						contents:[new Label({bottom:5, left: 100, string:"Notifications", style:l2})]}),
 					//flowerAmounts,
-					new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#9bd91f"})}),
+					new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#1eaf5f"})}),
 					
 					//new Line({name:"labels", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"black"}),
 					//	contents:[makeLabel("None",l1),makeLabel("One",l1),makeLabel("Few",l1),makeLabel("Many",l1)]}),

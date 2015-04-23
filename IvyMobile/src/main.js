@@ -19,7 +19,7 @@ currentScreen = "start";
 
 var whiteSkin = new Skin( { fill:"white" } );
 var greenSkin = new Skin({fill:"green"});
-var redSkin = new Skin({fill:"#adc822"});
+var redSkin = new Skin({fill:"#1eaf5f"});
 var blueSkin = new Skin({fill:"blue"});
 
 var mainColumn = new Column({

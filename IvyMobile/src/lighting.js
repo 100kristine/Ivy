@@ -1,9 +1,12 @@
 
-var background = "#4e4e4e"; //"#363636"
+var background = "#ea557b"; //"#363636"
 var blue  = new Skin({fill:"blue"});
-var green = new Skin({fill:"#9bd91f"});
+var green = new Skin({fill:"#1eaf5f"});
 var black = new Skin({fill:background});
 
+var l1 = new Style( { font: "25px Avenir", color:"white" } );
+var l2 = new Style( { font: "30px Avenir", color:"white" } );
+var l3 = new Style( { font: "55px Avenir", color:"white" } );
 // ********************** Declaring starting button  **********************
 var onoffFlag = true;	//	state of screen: "true" means on
 						//					 "false" means off
@@ -188,9 +191,7 @@ function selectableGrid(){
 */
 
 
-var l1 = new Style( { font: "15px", color:"white" } );
-var l2 = new Style( { font: "20px", color:"white" } );
-var l3 = new Style( { font: "50px", color:"white" } );
+
 
 function makeLabel(str,sty){
 	return new Label({left:0, right:0, string:str,style:sty});
@@ -251,9 +252,9 @@ function getColumn(){
 	//var subgrid = selectableGrid();
 	return new Column({name:"lights", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:background}), 
 				contents:[
-					new Line({left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#9bd91f"}),
+					new Line({left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#1eaf5f"}),
 						contents:[
-							makeLabel("lighting",l3)
+							makeLabel("Lighting",l3)
 						]
 					}),
 					onoffStatusLabel,

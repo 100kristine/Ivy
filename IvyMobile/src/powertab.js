@@ -6,20 +6,20 @@ var SCROLLER = require('mobile/scroller');
 var POWERLEVEL = "0";
 var STATUS = "connecting...";
 
-var colorStyle = new Style({ color: 'white', font: 'bold 18px', horizontal: 'center', vertical: 'middle', });
-var whiteSkin = new Skin({fill:"#4e4e4e"});
+var colorStyle = new Style({ color: 'white', font: '15px Avenir', horizontal: 'center', vertical: 'middle', });
+var whiteSkin = new Skin({fill:"#ea557b"});
 var greenSkin = new Skin({fill:"green"});
 var redSkin = new Skin({fill:"red"});
 var blueSkin = new Skin({fill:"blue"});
-var labelStyle = new Style( { font: "bold 20px", color:"white" } );
-var textStyle = new Style( { font: "bold 16px", color:"white" } );
+var labelStyle = new Style( { font: "20px Avenir", color:"white" } );
+var textStyle = new Style( { font: "55px Avenir", color:"white" } );
 
 function makeLabel(str,sty){
   return new Label({left:0, right:0, string:str,style:sty});
 }
-var l1 = new Style( { font: "15px", color:"white" } );
-var l2 = new Style( { font: "20px", color:"white" } );
-var l3 = new Style( { font: "50px", color:"white" } );
+var l1 = new Style( { font: "25px Avenir", color:"white" } );
+var l2 = new Style( { font: "30spx Avenir", color:"white" } );
+var l3 = new Style( { font: "55px Avenir", color:"white" } );
 
 
 var MySlider = SLIDERS.VerticalSlider.template(function($){ return{
@@ -83,16 +83,16 @@ var TopContainer = Container.template(function($) { return { top: 100, width: 25
 
 var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
     //new Label({top: 50, left:0, right:0, height: 40, string: "Battery Life:", style: textStyle}),
-    new Column({left:0, right:0, top:0, bottom:380,skin: new Skin({fill:"#9bd91f"}),
+    new Column({left:0, right:0, top:0, bottom:380,skin: new Skin({fill:"#1eaf5f"}),
             contents:[
               //makeLabel("power",l3), 
-              new Label({ left:0, right:0, top: 5, height: 40, string: "Power", style: textStyle, }),
+              new Label({ left:0, right:0, top: 15, height: 40, string: "Power", style: textStyle, }),
               //new Label({bottom: 170, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
             ]
           }),
      new Column({left:0, right:0, bottom:70,skin: whiteSkin,
            contents:[
-           	  new Label({bottom: 100, left:0, right:0, height: 40, string: "Status: " + STATUS, style: textStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
+           	  new Label({bottom: 100, left:0, right:0, height: 40, string: "Status: " + STATUS, style: labelStyle, behavior: Object.create((MainContainer.behaviors[1]).prototype)}),
           ]
          }),
     Column($, { left: 0, right: 0, top: 0, behavior: Object.create((MainContainer.behaviors[0]).prototype), }),

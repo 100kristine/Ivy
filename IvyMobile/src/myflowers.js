@@ -1,7 +1,10 @@
 //var cool = "test";
 //exports.cool = cool;
 
-var background = "#4e4e4e";//"#90c326"; //"#363636"
+var background = "#ea557b";//"#90c326"; //"#363636"
+var l1 = new Style( { font: "25px Avenir", color:"white" } );
+var l2 = new Style( { font: "25px Avenir", color:"white" } );
+var l3 = new Style( { font: "55px Avenir", color:"white" } );
 
 
 function activeMYF(button){
@@ -167,9 +170,7 @@ function selectableGrid(){
 	return col;
 }
 
-var l1 = new Style( { font: "15px", color:"white" } );
-var l2 = new Style( { font: "20px", color:"white" } );
-var l3 = new Style( { font: "50px", color:"white" } );
+
 
 function makeLabel(str,sty){
 	return new Label({left:0, right:0, string:str,style:sty});
@@ -196,8 +197,8 @@ function getColumn(){
 	var subgrid = selectableGrid();
 	return new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:background}), 
 				contents:[
-					new Line({name:"title", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#9bd91f"}),
-						contents:[makeLabel("my flowers",l3)]}),
+					new Line({name:"title", left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#1eaf5f"}),
+						contents:[makeLabel("My Flowers",l3)]}),
 					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//new Line({name:"heading", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:background}),
 					//	contents:[makeLabel("Number of Flowers in Vase",l2)]}),
