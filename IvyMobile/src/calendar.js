@@ -1,7 +1,7 @@
 // Styling
-var whiteSkin = new Skin( { fill:"#ea557b" } );
+var whiteSkin = new Skin( { fill:"white" } );//"#ea557b"
 var titlelabelStyle = new Style( { font: "30px Avenir", color:"white" } );
-var labelStyle = new Style( { font: "25px Avenir", color:"white" } );
+var labelStyle = new Style( { font: "25px Avenir", color:"#868786" } );
 var whiteS = new Skin({
 	fill:"#4e4e4e", 
 	borders:{left:5, right:5, top:5, bottom:5}, 

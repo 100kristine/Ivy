@@ -1,11 +1,11 @@
 
-var background = "#ea557b"; //"#363636"
+var background = "white"; //"#363636"
 var blue  = new Skin({fill:"blue"});
 var green = new Skin({fill:"#1eaf5f"});
 var black = new Skin({fill:background});
 
-var l1 = new Style( { font: "25px Avenir", color:"white" } );
-var l2 = new Style( { font: "30px Avenir", color:"white" } );
+var l1 = new Style( { font: "25px Avenir", color:"#868786" } );
+var l2 = new Style( { font: "30px Avenir", color:"#868786" } );
 var l3 = new Style( { font: "55px Avenir", color:"white" } );
 // ********************** Declaring starting button  **********************
 var onoffFlag = true;	//	state of screen: "true" means on

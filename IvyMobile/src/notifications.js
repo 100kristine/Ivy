@@ -22,7 +22,7 @@ var blueSkin = new Skin({fill:"blue"});
 
 var blue = new Skin({fill:"blue"});
 var green = new Skin({fill:"#1eaf5f"});
-var black= new Skin({fill:"#ea557b"});
+var black= new Skin({fill:"white"});
 
 var notifList = ["Water is half full", "Change your filter", "Add food to vase", "Water was filtered"];
 var lineList = [];
@@ -60,27 +60,27 @@ Handler.bind("/requestWater", Object.create(Behavior.prototype, {
 
 
 
-var l1 = new Style( { font: "22px Avenir", color:"white" } );
-var l2 = new Style( { font: "25px Avenir", color:"white" } );
-var l3 = new Style( { font: "55px Avenir", color:"white" } );
-var nStyle = new Style({font: "15px Avenir", color:"white"});
+var l1 = new Style( { font: "25px Avenir", color:"#868786" } );
+var l2 = new Style( { font: "35px Avenir Black", color:"#1eaf5f", horizontal:"left"} );
+var l3 = new Style( { font: "70px Avenir", color:"white" } );
+var nStyle = new Style({font: "15px Avenir", color:"#868786"});
 
 function makeLabel(str,sty){
-	return new Label({top:15, left:0, right:0, string:str,style:sty});
+	return new Label({top:2, left:0, right:0, string:str,style:sty});
 }
 var deleteButton = BUTTONS.Button.template(function($){ return{
-	 top:10, left:40, width:100,name:"off",skin: logoSkin, 
+	 top:10, left:40,width:100,name:"off",skin: logoSkin, 
 	contents:[
 		new Picture({left:0, right:0, top:0, height:50, width:50, name: $.name})
 	],
 	behavior: $.behavior
 	}});
 function makeLine(x){
-	return new Line({top:6, height: 45, left:0, right:0, name: "line", skin:new Skin({fill:"#939393"}), contents:[makeLabel(notifList[x], l1), 
+	return new Line({top:6, height: 35, left:10, right:10, name: "line", skin:new Skin({fill:"white", borders:{left:2, right:2, top:2, bottom:2}, stroke:"#95cfb0"}), contents:[makeLabel(notifList[x], l1), 
 	
 	]})}
 var i;
-var n= new Column({left:0, top: 5, right:0, skin:new Skin({fill:"#ea557b"}), name:"n",
+var n= new Column({left:0, top: 5, right:0, skin:new Skin({fill:"white"}), name:"n",
 contents:[]});
 
 function makeNotifs(){
@@ -92,21 +92,21 @@ function makeNotifs(){
 }
 	
 
-var notifications = new Column({left:0, top: 0, right:0, height: 500, skin:new Skin({fill:"#ea557b"}), name:"notifications",
+var notifications = new Column({left:0, top: 0, right:0, height: 500, skin:new Skin({fill:"white"}), name:"notifications",
 contents:[n]});
 
 	//var col = 
 var buttonArr = [];
 
-var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"#ea557b"}), contents:[new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"#363636"}), 
+var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"white"}), contents:[new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"white"}), 
 				contents:[
-					new Line({name:"title", left:0, right:0, top:-10, height:60, skin: new Skin({fill:"#1eaf5f"}),
+					new Line({name:"title", left:0, right:0, top:0, height:60, skin: new Skin({fill:"#1eaf5f"}),
 						contents:[makeLabel("Home",l3)]}),
-					new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#1eaf5f"})}),
-					new Line({name:"heading", left:0, right:0, top:0, height:40, skin: new Skin({fill:"#ea557b"}),
-						contents:[new Label({bottom:5, left: 100, string:"Notifications", style:l2})]}),
+					//new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#1eaf5f"})}),
+					new Line({name:"heading", left:0, right:0, top:0, height:40, skin: new Skin({fill:"white"}),
+						contents:[new Label({bottom:-10, left: 10, string:"Notifications", style:l2})]}),
 					//flowerAmounts,
-					new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#1eaf5f"})}),
+					//new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"white"})}),
 					
 					//new Line({name:"labels", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"black"}),
 					//	contents:[makeLabel("None",l1),makeLabel("One",l1),makeLabel("Few",l1),makeLabel("Many",l1)]}),

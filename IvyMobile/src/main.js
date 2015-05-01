@@ -12,6 +12,7 @@ var POWERTAB = require('powertab.js');
 var FLOWERS = require('myflowers.js');
 var LIGHTING = require('lighting.js');
 var NOTIFICATION = require('notifications.js');
+var SOCIAL = require('social.js');
 
 /*Screen stuff*/
 home = true;
@@ -19,7 +20,7 @@ currentScreen = "start";
 
 var whiteSkin = new Skin( { fill:"white" } );
 var greenSkin = new Skin({fill:"green"});
-var redSkin = new Skin({fill:"#1eaf5f"});
+var redSkin = new Skin({fill:"#95cfb0"});
 var blueSkin = new Skin({fill:"blue"});
 
 var mainColumn = new Column({
@@ -50,7 +51,7 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	top:10, bottom:10, left:10, right:10,
 	skin:redSkin,
 	contents:[
-		new Picture({left:0, right:0, top:0, height:80, width:80, url: $.url, name: $.name})
+		new Picture({left:0, right:0, top:0, height:50, width:50, url: $.url, name: $.name})
 		//new Label({left:0, right:0, string:$.textForLabel})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
@@ -72,16 +73,10 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 						active(calButton);
 						break;
 						
-					case "power":
-						currentScreen = "power";
-						mainColumn.add(powerScreen);
-						active(powerButton);
-						break;
-						
 					case "flower":
 						currentScreen = "flower";
-						mainColumn.add(flowerScreen);
-						active(flowerButton);
+						mainColumn.add(socialScreen);
+						active(socialButton);
 						break;
 					
 					case "lights":
@@ -214,14 +209,13 @@ var ApplicationBehavior = Behavior.template({
 
 
 
-var buttons = [homeButton, calButton, powerButton, flowerButton, lightsButton];
+var buttons = [homeButton, calButton,lightsButton,socialButton,];
 
 var homeButton = new MyButtonTemplate({url:"home.png",name:"home"});
 var calButton = new MyButtonTemplate({url:"cal.png",name:"cal"});
-var powerButton = new MyButtonTemplate({url:"power.png",name:"power"});
-var flowerButton = new MyButtonTemplate({url:"flower.png",name:"flower"});
+//var powerButton = new MyButtonTemplate({url:"power.png",name:"power"});
 var lightsButton = new MyButtonTemplate({url:"lights.png",name:"lights"});
-
+var socialButton = new MyButtonTemplate({url:"flower.png",name:"flower"});
 
 function makeHome(){
 	//return new Column({name:"home", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
@@ -235,32 +229,30 @@ function makeCal(){
 	return CAL.getColumn();
 }
 
-function makePower(){
-	return POWERTAB.getColumn();//new Column({name:"power", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				//contents:[]});
-}
 
-function makeMyFlowers(){
-	return FLOWERS.getColumn();//new Column({name:"flower", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
-				//contents:[]});
-}
+
 
 function makeLights(){
 	return LIGHTING.getColumn();//return new Column({name:"lights", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
 				//contents:[]});
 }
 
+function makeSocial(){
+	return SOCIAL.getColumn();//new Column({name:"power", left:0, right:0, top:40, bottom:100, skin: new Skin({fill:"black"}), 
+				//contents:[]});
+}
 
-var menu = new Line({left:0, right:0, height:100, bottom:0,skin:redSkin, 
-		contents:[homeButton,calButton,powerButton,flowerButton,lightsButton]
+var menu = new Line({left:0, right:0, height:70, bottom:0,skin:redSkin, 
+		contents:[homeButton,calButton,lightsButton,socialButton]
 	});
 
 
 var homeScreen = makeHome();
 var calScreen = makeCal();
-var powerScreen = makePower();
-var flowerScreen = makeMyFlowers();
+//var powerScreen = makePower();
+//var flowerScreen = makeMyFlowers();
 var lightsScreen = makeLights();
+var socialScreen = makeSocial();
 
 
 mainColumn.add(homeScreen);
