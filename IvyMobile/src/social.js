@@ -7,6 +7,7 @@ var whiteSkin = new Skin( { fill:"white" } );//"#ea557b"
 var titlelabelStyle = new Style( { font: "30px Avenir", color:"white" } );
 var titleLabelStyle = new Style( { font: "20px Avenir", color:"#868786" } );
 var labelStyle = new Style( { font: "15px Avenir", color:"#868786" } );
+var captionLabelStyle = new Style( { font: "11px Avenir", color:"#868786" } );
 var buttonStyle = new Style( { font: "17px Avenir", color:"green" } );
 var whiteS = new Skin({
     fill:"#4e4e4e", 
@@ -201,7 +202,7 @@ var orderButton = BUTTONS.Button.template(function($){ return{
 //var map = new Picture({right:0, left:100, top:3, height: 100, width: 100}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
 var map = new Picture({right:0, left:0, top:7, height: 60, width: 60}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
 
-var urlList = ["jimmy.png","sean.png","niha.png","kristine.png",
+var urlList = ["jimmy.png","sean.png","kristine.png","niha.png",
                 "tulip.png","orchid.png","rose.png","daisy.png"];
 
 var gridClickable = BUTTONS.Button.template(function($){ return{
@@ -225,21 +226,32 @@ function selectableGrid(){
         var temp = new Line({left:0, right:0, top:0, bottom:0, height:0, width: 0, skin:whiteS});
         
         for (i=start; i<stop+1; i++){
-            temp.add(makeButton(urlList[i]));
-            
+            temp.add(makeButton(urlList[i]));   
         }
         return temp;
+    }
+    
+    function makeLine2() {
+        var temp = new Line({left:0, right:0, top:0, bottom:0, height:0, width: 0, skin:whiteS});
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Jimmy bought tulips", style: captionLabelStyle}));
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Sean bought orchids", style: captionLabelStyle}));
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Niha bought daisies", style: captionLabelStyle}));
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Kristine bought roses", style: captionLabelStyle}));
+        return temp;        
     }
     
     var col= new Column({left:0, right:0, top:0, bottom:0, height:80, skin: whiteS, 
                 contents:[
                 ]});
-                
+    
+    col.add(makeLine2());           
     for (j=0;j<2; j++ ){
         col.add(makeLine(j+(3*j),j+(3*(j+1))));
     }
+    
     return col;
 }
+
 
 
 
