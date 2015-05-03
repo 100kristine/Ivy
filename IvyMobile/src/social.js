@@ -5,8 +5,10 @@ var BUTTONS = require('controls/buttons');
 // Styling
 var whiteSkin = new Skin( { fill:"white" } );//"#ea557b"
 var titlelabelStyle = new Style( { font: "30px Avenir", color:"white" } );
-var labelStyle = new Style( { font: "25px Avenir", color:"#868786" } );
-var buttonStyle = new Style( { color:"green" } );
+var titleLabelStyle = new Style( { font: "20px Avenir", color:"#868786" } );
+var labelStyle = new Style( { font: "15px Avenir", color:"#868786" } );
+var captionLabelStyle = new Style( { font: "11px Avenir", color:"#868786" } );
+var buttonStyle = new Style( { font: "17px Avenir", color:"green" } );
 var whiteS = new Skin({
     fill:"#4e4e4e", 
     borders:{left:5, right:5, top:5, bottom:5}, 
@@ -22,19 +24,20 @@ function makeLabel(str,sty){
 }
 
 // Labels
-var orderFlowerLabel = new Label({left:15, top: 10, height: 10, string: "Order Flowers:", style: labelStyle});
-var detectedAddressLabel1 = new Label({left:15, top: 10, height: 10, string: "Street Address", style: labelStyle});
-var detectedAddressLabel2 = new Label({left:15, top: 10, height: 10, string: "City, Zipcode", style: labelStyle});
-var orderLabel = new Label({left:15, top: 10, height: 10, string: "Flowers delivered in two days", style: labelStyle});
-var friendLabel = new Label({left:15, top: 10, height: 10, string: "Social:", style: labelStyle});
-var socialLabel = new Label({left:15, top: 10, height: 10, string: "What friends have ordered recently:", style: labelStyle});
-var friend1Label = new Label({left:15, top: 10, height: 10, string: "Automated:", style: labelStyle})
-var friend2Label = new Label({left:15, top: 10, height: 10, string: "Automated:", style: labelStyle})
-var friend3Label = new Label({left:15, top: 10, height: 10, string: "Automated:", style: labelStyle})
+var orderFlowerLabel = new Label({left:15, top: 5, height: 10, string: "Order Flowers:", style: titleLabelStyle});
+var detectedAddressLabel1 = new Label({left:15, top: 5, height: 10, string: "Street Address", style: labelStyle});
+var detectedAddressLabel2 = new Label({left:15, top: 5, height: 10, string: "City, Zipcode", style: labelStyle});
+var orderLabel = new Label({left:15, top: 5, height: 5, string: "Flowers are delivered in two days", style: labelStyle});
+var orderedLabel = new Label({right: 15, left:15, top: 5, height: 5, string: "", style: labelStyle});
+var friendLabel = new Label({left:15, top: 5, height: 10, bottom: 5, string: "Social: See What Friends Have Ordered", style: titleLabelStyle});
+var socialLabel = new Label({left:15, top: 5, height: 10, string: "What friends have ordered recently:", style: labelStyle});
+var friend1Label = new Label({left:15, top: 5, height: 10, string: "Automated:", style: labelStyle})
+var friend2Label = new Label({left:15, top: 5, height: 10, string: "Automated:", style: labelStyle})
+var friend3Label = new Label({left:15, top: 5, height: 10, string: "Automated:", style: labelStyle})
 
 // Buttons
 var detectAddressButton = BUTTONS.Button.template(function($){ return{
-    left: 60, right: 60, height:20, top:15,
+    left: 80, right: 80, height:15, top:5,
     contents: [
         new Label({left:0, right:0, height:20, string:"Use Current Location", style: buttonStyle})
     ],
@@ -45,6 +48,7 @@ var detectAddressButton = BUTTONS.Button.template(function($){ return{
             detectedAddressLabel1.string = "Detecting Address from Device...";
             detectedAddressLabel2.string = "Detecting Address from Device...";
             
+            // Timing Event
             var timeouts = [];
 
             application.behavior = Object.create(Object.prototype, {
@@ -55,9 +59,9 @@ var detectAddressButton = BUTTONS.Button.template(function($){ return{
                         if (time < item.time) {
                             if (0 < index)
                                 callbacks = array.splice(0, index);
-                            return true;
-                        }
-                    })) {
+                                return true;
+                            }
+                        })) {
                         if (0 < timeouts.length) {
                             callbacks = timeouts;
                             timeouts = [];
@@ -101,7 +105,8 @@ var detectAddressButton = BUTTONS.Button.template(function($){ return{
                     application.stop();
                 }
             }
-            
+            // End Timing           
+
             setTimeout( function() {
                 detectedAddressLabel1.string = "2605 Haste Street";
                 detectedAddressLabel2.string = "Berkeley, CA 94704";
@@ -115,13 +120,77 @@ var detectAddressButton = BUTTONS.Button.template(function($){ return{
 }});
 
 var orderButton = BUTTONS.Button.template(function($){ return{
-    left: 80, right: 80, height:20, top:15,
+    left: 80, right: 80, height:15, top:5,
     contents: [
         new Label({left:0, right:0, height:20, string:"Order Flowers", style: buttonStyle})
     ],
     behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
         onTap: { value: function(content){
             // do something after they order
+            orderedLabel.string = "Flowers ordered!";
+            
+            // Timing Event
+            var timeouts = [];
+
+            application.behavior = Object.create(Object.prototype, {
+                onTimeChanged: { value: function() {
+                    var callbacks;
+                    var time = application.time;
+                    if (!timeouts.some(function(item, index, array) {
+                        if (time < item.time) {
+                            if (0 < index)
+                                callbacks = array.splice(0, index);
+                                return true;
+                            }
+                        })) {
+                        if (0 < timeouts.length) {
+                            callbacks = timeouts;
+                            timeouts = [];
+                        }
+                    }
+                    if (callbacks) {
+                        callbacks.forEach(function(item) {
+                            item.callback.call();
+                        });
+                    }
+                }}
+            });
+            
+            function setTimeout(callback, delay) {
+                var timeout = {
+                    callback: callback,
+                    time: application.time + delay
+                };
+                if (!timeouts.length) {
+                    application.start();
+                }
+                if (!timeouts.some(function(item, index, array) {
+                    if (timeout.time < item.time) {
+                        array.splice(index, 0, timeout);
+                        return true;
+                    }
+                })) {
+                    timeouts.push(timeout);
+                }
+                return timeout;
+            }
+            
+            function clearTimeout(timeout) {
+                timeouts.some(function(item, index, array) {
+                    if (item == timeout) {
+                        array.splice(index, 1);
+                        return true;
+                    }
+                });
+                if (!timeouts.length) {
+                    application.stop();
+                }
+            }
+            // End Timing           
+
+            setTimeout( function() {
+                orderedLabel.string = "";
+            }, 2000 );
         }},
         onComplete: { value: function(content, message, json){
             setMessage(json);
@@ -131,15 +200,15 @@ var orderButton = BUTTONS.Button.template(function($){ return{
 
 // Images
 //var map = new Picture({right:0, left:100, top:3, height: 100, width: 100}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
-var map = new Picture({right:0, left:0, top:7, height: 80, width: 80}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
+var map = new Picture({right:0, left:0, top:7, height: 60, width: 60}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
 
-var urlList = ["daisy.png","rose.png","lily.png","daffodil.png",
-                "tulip.png","orchid.png","mums.png","other.png"];
+var urlList = ["jimmy.png","sean.png","kristine.png","niha.png",
+                "tulip.png","orchid.png","rose.png","daisy.png"];
 
 var gridClickable = BUTTONS.Button.template(function($){ return{
     top:0, bottom:0, left:0, right:0,name:"off",skin: whiteS,
     contents:[
-        new Picture({left:0, right:0, top:0, height:50, width:50, url: $.url, name: $.name})
+        new Picture({left:0, right:0, top:0, height:40, width:40, url: $.url, name: $.name})
     ],
     behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
         onTap: { value:  function(button){
@@ -157,22 +226,32 @@ function selectableGrid(){
         var temp = new Line({left:0, right:0, top:0, bottom:0, height:0, width: 0, skin:whiteS});
         
         for (i=start; i<stop+1; i++){
-            temp.add(makeButton(urlList[i]));
-            
+            temp.add(makeButton(urlList[i]));   
         }
         return temp;
+    }
+    
+    function makeLine2() {
+        var temp = new Line({left:0, right:0, top:0, bottom:0, height:0, width: 0, skin:whiteS});
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Jimmy bought tulips", style: captionLabelStyle}));
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Sean bought orchids", style: captionLabelStyle}));
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Niha bought daisies", style: captionLabelStyle}));
+        temp.add(new Label({left:0, right: 0, width: 15, height: 10, string: "Kristine bought roses", style: captionLabelStyle}));
+        return temp;        
     }
     
     var col= new Column({left:0, right:0, top:0, bottom:0, height:80, skin: whiteS, 
                 contents:[
                 ]});
-                
-    for (j=0;j<1; j++ ){
+    
+    col.add(makeLine2());           
+    for (j=0;j<2; j++ ){
         col.add(makeLine(j+(3*j),j+(3*(j+1))));
-        //col.add(make
     }
+    
     return col;
 }
+
 
 
 
@@ -194,8 +273,9 @@ function getColumn(){
                     detectedAddressLabel2,
                     orderLabel,
                     new orderButton(),
+                    orderedLabel,
                     friendLabel,
-                    socialLabel,
+                    //socialLabel,
                     //friend1Label,
                     //friend2Label,
                     //friend3Label,
