@@ -5,8 +5,8 @@ var PinsSimulators = require('PinsSimulators');
 var configure = exports.configure = function(configuration) {
 	this.pinsSimulator = shell.delegate("addSimulatorPart", {
 			header : { 
-				label : "Analog Senor of Levels", 
-				name : "Power, Water, Filter, Food", 
+				label : "Analog Sensors of Features", 
+				name : "Power, Water, Filter, Food, Stems", 
 				iconVariant : PinsSimulators.SENSOR_KNOB 
 			},
 			axes : [
@@ -14,28 +14,28 @@ var configure = exports.configure = function(configuration) {
 					{
 						valueLabel : "Power",
 						valueID : "powerValue",
-						speed : 0.5
+						speed : 0
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
 						valueLabel : "Water",
 						valueID : "waterValue",
-						speed : 0.5
+						speed : 0
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
 						valueLabel : "Filter",
 						valueID : "filterValue",
-						speed : 0.5
+						speed : 0
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
 						valueLabel : "Food",
 						valueID : "foodValue",
-						speed : 0.5
+						speed : 0
 					}
 				),
 			]
