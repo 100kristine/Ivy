@@ -54,7 +54,8 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 					brightnessSliderLabel.visible = false;
 					brightnessSlider.visible = false;
 					hueSliderLabel.visible = false;
-					hueSlider.visible = false; 
+					hueSlider.visible = false;
+					drawHeart(false); 
 				}
 				else{
 					onoffFlag = true;
@@ -65,6 +66,7 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 					brightnessSlider.visible = true;
 					hueSliderLabel.visible = true;
 					hueSlider.visible = true;
+					drawHeart(true);
 				}
 				
 				//inactivateAllMYF(currentScreen);
@@ -77,10 +79,12 @@ var mainCanvas =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:10
 //var g = 255;
 //var b = 255;
 var h = 0;
-var s = "100%";
-var l = "50%"; 
+var s = 100;
+var l = 50;
+var l_old_min = 25.0;
+var l_old_max = 50.0;
 
-function drawHeart() {
+function drawHeart(activate) {
 //from http://calebevans.me/projects/jcanvas/docs/extending/
     // Just to keep our lines short
     var ctx = mainCanvas.getContext( "2d" );
@@ -91,15 +95,24 @@ function drawHeart() {
     //var ra = [5  , 2  , 3  , 4  , 7  , 9  , 3  , 7  , 9  , 3  , 7  , 9  , 3  ];
 //    var color = "rgb("+[r,g,b].join(",")+")";
 	//var color = "hsl(180,100%,50%)";
-	var color = "hsl("+[h,s,l].join(",")+")";
+	var s_paren = s+"%";
+	var l_paren = l+"%";
+	var color = "hsl("+[h,s_paren,l_paren].join(",")+")";
     //trace(color);
     
-    for(i=0; i<x.length; i++) {
-			ctx.beginPath();
-	      ctx.arc(x[i], y[i], ra[i], 0, 2 * Math.PI, false);
-	      ctx.fillStyle = color;
-	      ctx.fill();
-	      
+    ctx.clearRect(0,0,mainCanvas.width,mainCanvas.height);
+    
+    if(activate) {
+	    var numLightsToDraw = Math.round(x.length*((l-l_old_min)/(l_old_max-l_old_min)));
+	    if( numLightsToDraw == 0) {numLightsToDraw = 1;}
+	    for(i=0; i<numLightsToDraw; i++) {
+	    //for(i=0; i<x.length; i++) {
+				ctx.beginPath();
+		      ctx.arc(x[i], y[i], ra[i], 0, 2 * Math.PI, false);
+		      ctx.fillStyle = color;
+		      ctx.fill();
+		      
+		}
 	}
 //	ctx.drawImage(hiresPic,0,0,100,150);
     //ctx.fillStyle = "black";
@@ -230,9 +243,9 @@ var brightnessSliderTemplate = SLIDERS.HorizontalSlider.template(function($){ re
 		onValueChanged: { value: function(container){
     		SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
     		
-    		l = Math.round(33.0 + ((66.0-33.0)/(100.0))*(this.data.value)) + "%";
-    		trace(l+"\n");
-    		drawHeart();
+    		l = Math.round(l_old_min + ((l_old_max-l_old_min)/(100.0))*(this.data.value));
+    		
+    		drawHeart(true);
     		
     	}}
     })
@@ -286,7 +299,7 @@ var hueSliderTemplate = SLIDERS.HorizontalSlider.template(function($){ return{
     		var scale = (this.data.value) / 120.0;	// Not using 100 so that the range never quite reaches back around to 0
     		h = Math.round(360.0 * scale);
     		
-    		drawHeart();
+    		drawHeart(true);
     		
     	}}
     })
@@ -298,7 +311,7 @@ var plantPicture = new Picture({ left:0, right:0, top:0, height:180, width:300,
 var hiresPic = 	new Texture("lightingIcons/lighting_flower2.png");
 																
 var brightnessSliderLabel = makeLabel("brightness",l2);
-var brightnessSlider = new brightnessSliderTemplate({ min:0, max:100, value:50 });
+var brightnessSlider = new brightnessSliderTemplate({ min:0, max:100, value:100 });
 
 var hueSliderLabel = makeLabel("hue",l2);
 var hueSlider = new hueSliderTemplate({ min:0, max:100, value:0 });
@@ -322,13 +335,13 @@ function getColumn(){
 					//typeFlowers,
 					//typeFlowers2,
 					//subgrid,
-					new Line({left:0, right:0, top:10, bottom:0,
+					new Column({left:0, right:0, top:10, bottom:0,
 						contents:[
 							brightnessSliderLabel,
 							brightnessSlider
 						]
 					}),
-					new Line({left:0, right:0, top:10, bottom:0,
+					new Column({left:0, right:0, top:10, bottom:0,
 						contents:[
 							hueSliderLabel,
 							hueSlider
