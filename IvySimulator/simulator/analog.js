@@ -38,6 +38,13 @@ var configure = exports.configure = function(configuration) {
 						speed : 0
 					}
 				),
+				new PinsSimulators.AnalogInputAxisDescription(
+					{
+						valueLabel : "Stems",
+						valueID : "stemValue",
+						speed : 0
+					}
+				),
 			]
 		});
 }
@@ -53,8 +60,9 @@ var read = exports.read = function() {
 }
 
 exports.pins = {
-			power: { type: "A2D" },
-			water: { type: "A2D" },
+			power:  { type: "A2D" },
+			water:  { type: "A2D" },
 			filter: { type: "A2D" },
-			food: { type: "A2D" }
+			food:   { type: "A2D" },
+			stem:   { type: "A2D" },
 		};

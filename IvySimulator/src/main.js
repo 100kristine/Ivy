@@ -4,10 +4,12 @@ var POWERLEVEL = "0";
 var WATERLEVEL = "0";
 var FILTERLEVEL = "0";
 var FOODLEVEL = "0";
+var STEMLEVEL = "0";
 var SOLARSTATUS = "None";
 var WATERSTATUS = "None";
 var FILTERSTATUS = "none";
 var FOODSTATUS = "None";
+var STEMSTATUS = "None";
 
 var ButtonStyle = new Style({ color: 'black', font: 'bold 50px', horizontal: 'null', vertical: 'null', });
 
@@ -17,7 +19,8 @@ Handler.bind("/getData", Object.create(Behavior.prototype, {
 			message.responseText = JSON.stringify( { power: POWERLEVEL, status: SOLARSTATUS, 
 													 water: WATERLEVEL, waterStatus: WATERSTATUS, 
 													 filter: FILTERLEVEL, filterStatus: FILTERSTATUS, 
-													 food: FOODLEVEL, foodStatus: FOODSTATUS, } );
+													 food: FOODLEVEL, foodStatus: FOODSTATUS,
+													 stem: STEMLEVEL, stemStatus: STEMSTATUS, } );
 			message.status = 200;
 		},
 	},
@@ -38,7 +41,8 @@ Handler.bind("/gotPowerWaterResult", Object.create(Behavior.prototype, {
         		application.distribute( "onPowerChanged", result.powerValue ); 
         		application.distribute( "onWaterChanged", result.waterValue );	
         		application.distribute( "onFilterChanged", result.filterValue ); 
-        		application.distribute( "onFoodChanged", result.foodValue );		
+        		application.distribute( "onFoodChanged", result.foodValue );
+        		application.distribute( "onStemChanged", result.stemValue );		
         	}}
 }));
 
@@ -66,9 +70,12 @@ var MainContainer = Column.template(function($) { return { left: 0, right: 0, to
 	
 	Label($, { left: 0, right: 0, top:0,bottom:0, //bottom: 0,
 	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[4]).prototype), string: '- - -', }),
+	
+	Label($, { left: 0, right: 0, top:0,bottom:0, //bottom: 0,
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[5]).prototype), string: '- - -', }),
 ], }});
 
-MainContainer.behaviors = new Array(5);
+MainContainer.behaviors = new Array(6);
 
 MainContainer.behaviors[0] = Behavior.template({
 	onSolarChanged: function(content, result) {
@@ -129,6 +136,21 @@ MainContainer.behaviors[4] = Behavior.template({
         content.string = FOODSTATUS;
 	},
 })
+
+MainContainer.behaviors[5] = Behavior.template({
+	onStemChanged: function(content, result) {
+		STEMLEVEL = (result*100).toString().substring( 0, 8 );
+		if (parseInt(STEMLEVEL) < 51) {
+			STEMSTATUS = "Stem Level: Short";
+		} if (parseInt(STEMLEVEL) > 50) {
+			STEMSTATUS = "Stem Level: Long";
+		} if (parseInt(STEMLEVEL) == 0) {
+			STEMSTATUS = "Stem Level: 0";
+		} 
+        content.string = STEMSTATUS;
+	},
+})
+
 /* Create message for communication with hardware pins.
    analogSensor: name of pins object, will use later for calling 'analogSensor' methods.
    require: name of js or xml bll file.
@@ -146,10 +168,11 @@ application.invoke( new MessageWithObject( "pins:configure", {
     powerWaterSensor: {
         require: "analog",
         pins: {
-            power: { pin: 36 },
-            water: { pin: 37 },
+            power:  { pin: 36 },
+            water:  { pin: 37 },
             filter: { pin: 38 },
-            food: { pin: 39 }
+            food:   { pin: 39 },
+            stem:	{ pin: 40 },
         },
     },
     solarPower: {
