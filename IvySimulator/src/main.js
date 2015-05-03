@@ -4,10 +4,12 @@ var POWERLEVEL = "0";
 var WATERLEVEL = "0";
 var FILTERLEVEL = "0";
 var FOODLEVEL = "0";
+var STEMLEVEL = "0";
 var SOLARSTATUS = "None";
 var WATERSTATUS = "None";
 var FILTERSTATUS = "none";
 var FOODSTATUS = "None";
+var STEMSTATUS = "None";
 
 var ButtonStyle = new Style({ color: 'black', font: 'bold 50px', horizontal: 'null', vertical: 'null', });
 
@@ -17,7 +19,8 @@ Handler.bind("/getData", Object.create(Behavior.prototype, {
 			message.responseText = JSON.stringify( { power: POWERLEVEL, status: SOLARSTATUS, 
 													 water: WATERLEVEL, waterStatus: WATERSTATUS, 
 													 filter: FILTERLEVEL, filterStatus: FILTERSTATUS, 
-													 food: FOODLEVEL, foodStatus: FOODSTATUS, } );
+													 food: FOODLEVEL, foodStatus: FOODSTATUS,
+													 stem: STEMLEVEL, stemStatus: STEMSTATUS, } );
 			message.status = 200;
 		},
 	},
@@ -38,7 +41,8 @@ Handler.bind("/gotPowerWaterResult", Object.create(Behavior.prototype, {
         		application.distribute( "onPowerChanged", result.powerValue ); 
         		application.distribute( "onWaterChanged", result.waterValue );	
         		application.distribute( "onFilterChanged", result.filterValue ); 
-        		application.distribute( "onFoodChanged", result.foodValue );		
+        		application.distribute( "onFoodChanged", result.foodValue );
+        		application.distribute( "onStemChanged", result.stemValue );		
         	}}
 }));
 
@@ -50,40 +54,44 @@ Handler.bind("/gotLightingSensorsResult", Object.create(Behavior.prototype, {
 }));
 
 
-var MainContainer = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}), contents: [
+var MainContainer = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}), contents: [
 
-	Label($, { left: 0, right: 0, top: 25,
-	style: new Style({ color: 'black', font: '26px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[3]).prototype), string: '- - -', }),
+	Label($, { left: 0, right: 0, top:0,bottom:0, //top: 25,
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '- - -', }),
 	
-	Label($, { left: 0, right: 0, top: 50,
-	style: new Style({ color: 'black', font: '26px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[4]).prototype), string: '- - -', }),
+	Label($, { left: 0, right: 0, top:0,bottom:0, //top: 50,
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '- - -', }),
 	
-	Label($, { left: 0, right: 0, top: 0,
-	style: new Style({ color: 'black', font: '20px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '- - -', }),
+	Label($, { left: 0, right: 0, top:0,bottom:0, //top: 0,
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[2]).prototype), string: '- - -', }),
 
-	Label($, { left: 0, right: 0, 
-	style: new Style({ color: 'black', font: '26px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '- - -', }),
+	Label($, { left: 0, right: 0, top:0,bottom:0, 
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[3]).prototype), string: '- - -', }),
 	
-	Label($, { left: 0, right: 0, bottom: 0,
-	style: new Style({ color: 'black', font: '20px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[2]).prototype), string: '- - -', }),
+	Label($, { left: 0, right: 0, top:0,bottom:0, //bottom: 0,
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[4]).prototype), string: '- - -', }),
+	
+	Label($, { left: 0, right: 0, top:0,bottom:0, //bottom: 0,
+	style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }), behavior: Object.create((MainContainer.behaviors[5]).prototype), string: '- - -', }),
 ], }});
 
-MainContainer.behaviors = new Array(5);
+MainContainer.behaviors = new Array(6);
+
 MainContainer.behaviors[0] = Behavior.template({
-	onPowerChanged: function(content, result) {
-		POWERLEVEL = (result*100).toString().substring( 0, 8 );
-		content.string = result.toString().substring( 0, 8 );
+	onSolarChanged: function(content, result) {
+	    if ( result == "0" ) {  
+            SOLARSTATUS = "Battery: "+ POWERLEVEL + "% "+"(Not Charging)";             
+        } else {
+        	SOLARSTATUS = "Battery: "+ POWERLEVEL + "% "+"(Charging)";
+        }
+        content.string = SOLARSTATUS;
 	},
 })
 
 MainContainer.behaviors[1] = Behavior.template({
-	onSolarChanged: function(content, result) {
-	    if ( result == "0" ) {  
-            SOLARSTATUS = "Not Charging";             
-        } else {
-        	SOLARSTATUS = "Charging";
-        }
-        content.string = SOLARSTATUS;
+	onPowerChanged: function(content, result) {
+		POWERLEVEL = Math.round(result*100.0).toString().substring( 0, 8 );
+		//content.string = "Battery is at " + POWERLEVEL + "%.";
 	},
 })
 
@@ -91,11 +99,11 @@ MainContainer.behaviors[2] = Behavior.template({
 	onWaterChanged: function(content, result) {
 		WATERLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(WATERLEVEL) < 51) {
-			WATERSTATUS = "Time to Change";
+			WATERSTATUS = "Water Level: Time to Change";
 		} if (parseInt(WATERLEVEL) > 50) {
-			WATERSTATUS = "Healthy";
+			WATERSTATUS = "Water Level: Healthy";
 		} if (parseInt(WATERLEVEL) == 0) {
-			WATERSTATUS = "Empty";
+			WATERSTATUS = "Water Level: Empty";
 		} 
         content.string = WATERSTATUS;
 	},
@@ -105,11 +113,11 @@ MainContainer.behaviors[3] = Behavior.template({
 	onFilterChanged: function(content, result) {
 		FILTERLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(FILTERLEVEL) < 51) {
-			FILTERSTATUS = "Dirty Filter";
+			FILTERSTATUS = "Filter Status: Dirty";
 		} if (parseInt(FILTERLEVEL) > 50) {
-			FILTERSTATUS = "Clean";
+			FILTERSTATUS = "Filter Status: Clean";
 		} if (parseInt(FILTERLEVEL) == 0) {
-			FILTERSTATUS = "Change now!";
+			FILTERSTATUS = "Filter Status: Change now!";
 		} 
         content.string = FILTERSTATUS;
 	},
@@ -119,15 +127,30 @@ MainContainer.behaviors[4] = Behavior.template({
 	onFoodChanged: function(content, result) {
 		FOODLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(FOODLEVEL) < 51) {
-			FOODSTATUS = "Low Food";
+			FOODSTATUS = "Food Level: Low Food";
 		} if (parseInt(FOODLEVEL) > 50) {
-			FOODSTATUS = "Plenty of Food";
+			FOODSTATUS = "Food Level: Plenty of Food";
 		} if (parseInt(FOODLEVEL) == 0) {
-			FOODSTATUS = "No Food";
+			FOODSTATUS = "Food Level: No Food";
 		} 
         content.string = FOODSTATUS;
 	},
 })
+
+MainContainer.behaviors[5] = Behavior.template({
+	onStemChanged: function(content, result) {
+		STEMLEVEL = (result*100).toString().substring( 0, 8 );
+		if (parseInt(STEMLEVEL) < 51) {
+			STEMSTATUS = "Stem Level: Short";
+		} if (parseInt(STEMLEVEL) > 50) {
+			STEMSTATUS = "Stem Level: Long";
+		} if (parseInt(STEMLEVEL) == 0) {
+			STEMSTATUS = "Stem Level: 0";
+		} 
+        content.string = STEMSTATUS;
+	},
+})
+
 /* Create message for communication with hardware pins.
    analogSensor: name of pins object, will use later for calling 'analogSensor' methods.
    require: name of js or xml bll file.
@@ -142,19 +165,20 @@ application.invoke( new MessageWithObject( "pins:configure", {
     		hue: 		{ pin: 47 }
 		},
 	},
-	solarPower: {
-        require: "solarPower",
-        pins: {
-            solarPower: { pin: 42 }
-        },
-    },
     powerWaterSensor: {
         require: "analog",
         pins: {
-            power: { pin: 38 },
-            water: { pin: 37 },
+            power:  { pin: 36 },
+            water:  { pin: 37 },
             filter: { pin: 38 },
-            food: { pin: 37 }
+            food:   { pin: 39 },
+            stem:	{ pin: 40 },
+        },
+    },
+    solarPower: {
+        require: "solarPower",
+        pins: {
+            solarPower: { pin: 42 }
         },
     },
 }));

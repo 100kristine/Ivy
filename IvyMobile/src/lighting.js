@@ -8,8 +8,8 @@ var l1 = new Style( { font: "25px Avenir", color:"#868786" } );
 var l2 = new Style( { font: "30px Avenir", color:"#868786" } );
 var l3 = new Style( { font: "55px Avenir", color:"white" } );
 // ********************** Declaring starting button  **********************
-var onoffFlag = true;	//	state of screen: "true" means on
-						//					 "false" means off
+var onoffFlag = true;	//	state of lighting feature: "true" means on
+						//					 		   "false" means off
 
 function onLIGHT(button){ button[0].url = "lightingIcons/on.png"; }
 
@@ -54,7 +54,8 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 					brightnessSliderLabel.visible = false;
 					brightnessSlider.visible = false;
 					hueSliderLabel.visible = false;
-					hueSlider.visible = false; 
+					hueSlider.visible = false;
+					drawHeart(false); 
 				}
 				else{
 					onoffFlag = true;
@@ -65,6 +66,7 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 					brightnessSlider.visible = true;
 					hueSliderLabel.visible = true;
 					hueSlider.visible = true;
+					drawHeart(true);
 				}
 				
 				//inactivateAllMYF(currentScreen);
@@ -73,26 +75,44 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 }});
 
 var mainCanvas =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:100,width:300});
-var r = 255;
-var g = 255;
-var b = 255;
+//var r = 255;
+//var g = 255;
+//var b = 255;
+var h = 0;
+var s = 100;
+var l = 50;
+var l_old_min = 25.0;
+var l_old_max = 50.0;
 
-function drawHeart() {
+function drawHeart(activate) {
 //from http://calebevans.me/projects/jcanvas/docs/extending/
     // Just to keep our lines short
     var ctx = mainCanvas.getContext( "2d" );
-    var x = [100,180,150,100,150,170,100,180,120,100,150,170];
-    var y = [10,60,40,10,50,20,20,10,70,90,10,70,90];
-    var ra = [5,2,3,4,7,9,3,7,9,3,7,9,3];
-    var color = "rgb("+[r,g,b].join(",")+")";
+    var x =  [100, 180, 150, 100, 150, 170, 100, 180, 120, 100, 150, 170];
+    var y =  [10 , 60 , 40 , 10 , 50 , 20 , 20 , 10 , 70 , 90 , 10 , 70 ];
+    var ra = [5  , 2  , 3  , 4  , 7  , 9  , 3  , 7  , 9  , 3  , 7  , 9  ];
+    //var y =  [10 , 60 , 40 , 10 , 50 , 20 , 20 , 10 , 70 , 90 , 10 , 70 , 90 ];
+    //var ra = [5  , 2  , 3  , 4  , 7  , 9  , 3  , 7  , 9  , 3  , 7  , 9  , 3  ];
+//    var color = "rgb("+[r,g,b].join(",")+")";
+	//var color = "hsl(180,100%,50%)";
+	var s_paren = s+"%";
+	var l_paren = l+"%";
+	var color = "hsl("+[h,s_paren,l_paren].join(",")+")";
     //trace(color);
     
-    for(i=0; i<x.length; i++) {
-			ctx.beginPath();
-	      ctx.arc(x[i], y[i], ra[i], 0, 2 * Math.PI, false);
-	      ctx.fillStyle = color;
-	      ctx.fill();
-	      
+    ctx.clearRect(0,0,mainCanvas.width,mainCanvas.height);
+    
+    if(activate) {
+	    var numLightsToDraw = Math.round(x.length*((l-l_old_min)/(l_old_max-l_old_min)));
+	    if( numLightsToDraw == 0) {numLightsToDraw = 1;}
+	    for(i=0; i<numLightsToDraw; i++) {
+	    //for(i=0; i<x.length; i++) {
+				ctx.beginPath();
+		      ctx.arc(x[i], y[i], ra[i], 0, 2 * Math.PI, false);
+		      ctx.fillStyle = color;
+		      ctx.fill();
+		      
+		}
 	}
 //	ctx.drawImage(hiresPic,0,0,100,150);
     //ctx.fillStyle = "black";
@@ -217,21 +237,69 @@ var typeFlowers2 = new Line({name:"typeFlowers2", left:0, right:0, top:0, bottom
 						]});
 */
 
-var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
+var brightnessSliderTemplate = SLIDERS.HorizontalSlider.template(function($){ return{
+	height:20, left:10, right:20,
+	behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
+		onValueChanged: { value: function(container){
+    		SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
+    		
+    		l = Math.round(l_old_min + ((l_old_max-l_old_min)/(100.0))*(this.data.value));
+    		
+    		drawHeart(true);
+    		
+    	}}
+    })
+}}); 
+
+var hueSliderTemplate = SLIDERS.HorizontalSlider.template(function($){ return{
 	height:20, left:10, right:20,
 	behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
 		onValueChanged: { value: function(container){
     		SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
     		//trace("Value is: " + this.data.value + "\n");
-    		var scale = (this.data.value/50);
-    		r = (r*scale<1) ? 255: Math.round(.2*r*scale);
-    		b = (b*scale<1) ? 255: Math.round(.3*b*scale);
-    		g = (g*scale<1) ? 255: Math.round(.01*g*scale);
+    		//trace(this.data.value+"\n");
+    		
+    		/*
+    		var scale = 0;
+    		r=255;
+    		g=165;
+    		b=0;
+    		if (this.data.value <= 33.0) {
+    			scale = this.data.value / 33.0;
+    			r = Math.round(255 * (1.0 - scale));
+    			g = Math.round(255 * (scale));
+    			b = 0;
+    		}
+    		else if (this.data.value <= 67.0) {
+    			scale = (this.data.value - 34) / 33.0;
+    			r = 0;
+    			g = Math.round(255 * (1.0 - scale));
+    			b = Math.round(255 * (scale));
+    		}
+    		else {
+    			scale = (this.data.value - 68) / 33.0;
+    			r = Math.round(255 * (scale));
+    			g = 0;
+    			b = Math.round(255 * (1.0 - scale));
+    		}
+    		*/
+    		
+    		/*
+    		//r = (r*scale<1) ? 255: Math.round(.2*r*scale);
+    		//b = (b*scale<1) ? 255: Math.round(.3*b*scale);
+    		//g = (g*scale<1) ? 255: Math.round(.01*g*scale);
+    		
     		//trace(r+" ");
     		//trace(b+" ");
     		//trace(g+" ");
     		//trace("colors");
-    		drawHeart();
+    		*/
+    		
+    		//var scale = (this.data.value) / 100.0;
+    		var scale = (this.data.value) / 120.0;	// Not using 100 so that the range never quite reaches back around to 0
+    		h = Math.round(360.0 * scale);
+    		
+    		drawHeart(true);
     		
     	}}
     })
@@ -243,10 +311,10 @@ var plantPicture = new Picture({ left:0, right:0, top:0, height:180, width:300,
 var hiresPic = 	new Texture("lightingIcons/lighting_flower2.png");
 																
 var brightnessSliderLabel = makeLabel("brightness",l2);
-var brightnessSlider = new MySlider({ min:0, max:100, value:50 });
+var brightnessSlider = new brightnessSliderTemplate({ min:0, max:100, value:100 });
 
 var hueSliderLabel = makeLabel("hue",l2);
-var hueSlider = new MySlider({ min:0, max:100, value:50 });
+var hueSlider = new hueSliderTemplate({ min:0, max:100, value:0 });
 
 function getColumn(){
 	//var subgrid = selectableGrid();
@@ -267,13 +335,13 @@ function getColumn(){
 					//typeFlowers,
 					//typeFlowers2,
 					//subgrid,
-					new Line({left:0, right:0, top:10, bottom:0,
+					new Column({left:0, right:0, top:10, bottom:0,
 						contents:[
 							brightnessSliderLabel,
 							brightnessSlider
 						]
 					}),
-					new Line({left:0, right:0, top:10, bottom:0,
+					new Column({left:0, right:0, top:10, bottom:0,
 						contents:[
 							hueSliderLabel,
 							hueSlider

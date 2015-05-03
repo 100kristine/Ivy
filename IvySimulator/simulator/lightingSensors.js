@@ -16,14 +16,14 @@ var configure = exports.configure = function(configuration) {
 					{
 						valueLabel : "Brightness",
 						valueID : "brightnessValue",
-						speed : 0.2
+						speed : 0
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
 						valueLabel : "Hue",
 						valueID : "hueValue",
-						speed : 0.05
+						speed : 0
 					}
 				),
 			]
