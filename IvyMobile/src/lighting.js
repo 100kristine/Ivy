@@ -349,7 +349,7 @@ var plantPicture = new Picture({ left:0, right:0, top:0, height:180, width:300,
 var hiresPic = 	new Texture("lightingIcons/lighting_flower2.png");
 																
 var brightnessSliderLabel = makeLabel("brightness",l2);
-var brightnessSlider = new brightnessSliderTemplate({ min:0, max:100, value:100 });
+var brightnessSlider = new brightnessSliderTemplate({ min:0, max:100, value:40 });
 
 var hueSliderLabel = makeLabel("hue",l2);
 var hueSlider = new hueSliderTemplate({ min:0, max:100, value:0 });
