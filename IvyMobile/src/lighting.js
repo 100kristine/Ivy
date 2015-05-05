@@ -107,8 +107,8 @@ function drawHeart(activate) {
     ctx.clearRect(0,0,mainCanvas.width,mainCanvas.height);
     
     if (activate) {
-    	var numLightsToDraw;
-    	trace(l);
+    	ctx.fillRect(230, 50, 25, 25);	// (x, y, width, height)
+    	
     	if (brightnessSliderValue < 50) {
     		for(i=0; i<x.length; i++) {
     			if(i % 2 == 0) {
@@ -131,7 +131,7 @@ function drawHeart(activate) {
 		      	}
 		      	else {
 		      		ctx.beginPath();
-					var raScale = 1.0 + ((2.0 - 1.0)/(50.0 - 0.0))*(brightnessSliderValue - 50.0);
+					var raScale = 1.0 + ((1.6 - 1.0)/(50.0 - 0.0))*(brightnessSliderValue - 50.0);
 		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
 		      		ctx.fillStyle = color;
 		      		ctx.fill();
