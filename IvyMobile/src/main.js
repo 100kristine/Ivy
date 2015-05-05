@@ -5,6 +5,7 @@ var BUTTONS = require("controls/buttons");
 var CONTROL = require("mobile/control");
 var SLIDERS = require('controls/sliders');
 
+//@module
 
 /* ------------------------- Screen stuff ------------------------- */
 
