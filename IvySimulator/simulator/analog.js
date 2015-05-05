@@ -6,7 +6,7 @@ var configure = exports.configure = function(configuration) {
 	this.pinsSimulator = shell.delegate("addSimulatorPart", {
 			header : { 
 				label : "Analog Sensors of Features", 
-				name : "Power, Water, Filter, Food, Stems", 
+				name : "Power, Food, Water, pH Level, Filter, Stem Length, Flower Quantity", 
 				iconVariant : PinsSimulators.SENSOR_KNOB 
 			},
 			axes : [
@@ -19,8 +19,22 @@ var configure = exports.configure = function(configuration) {
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
+						valueLabel : "Food",
+						valueID : "foodValue",
+						speed : 0
+					}
+				),
+				new PinsSimulators.AnalogInputAxisDescription(
+					{
 						valueLabel : "Water",
 						valueID : "waterValue",
+						speed : 0
+					}
+				),
+				new PinsSimulators.AnalogInputAxisDescription(
+					{
+						valueLabel : "pH Level",
+						valueID : "phValue",
 						speed : 0
 					}
 				),
@@ -33,15 +47,15 @@ var configure = exports.configure = function(configuration) {
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
-						valueLabel : "Food",
-						valueID : "foodValue",
+						valueLabel : "Stems",
+						valueID : "stemValue",
 						speed : 0
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
-						valueLabel : "Stems",
-						valueID : "stemValue",
+						valueLabel : "Flower Quantity",
+						valueID : "quantityValue",
 						speed : 0
 					}
 				),
@@ -60,9 +74,11 @@ var read = exports.read = function() {
 }
 
 exports.pins = {
-			power:  { type: "A2D" },
-			water:  { type: "A2D" },
-			filter: { type: "A2D" },
-			food:   { type: "A2D" },
-			stem:   { type: "A2D" },
+			power:    { type: "A2D" },
+			food:     { type: "A2D" },
+			water:    { type: "A2D" },
+			filter:   { type: "A2D" },
+			ph:       { type: "A2D" },
+			stem:     { type: "A2D" },
+			quantity: { type: "A2D" }
 		};
