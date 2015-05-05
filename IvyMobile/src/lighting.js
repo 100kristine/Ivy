@@ -74,7 +74,7 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
-var mainCanvas =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:100,width:300});
+var mainCanvas =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:135,width:300});
 //var r = 255;
 //var g = 255;
 //var b = 255;
@@ -83,14 +83,18 @@ var s = 100;
 var l = 50;
 var l_old_min = 25.0;
 var l_old_max = 50.0;
+var brightnessSliderValue = 0;
 
 function drawHeart(activate) {
 //from http://calebevans.me/projects/jcanvas/docs/extending/
     // Just to keep our lines short
     var ctx = mainCanvas.getContext( "2d" );
-    var x =  [100, 180, 150, 100, 150, 170, 100, 180, 120, 100, 150, 170];
-    var y =  [10 , 60 , 40 , 10 , 50 , 20 , 20 , 10 , 70 , 90 , 10 , 70 ];
-    var ra = [5  , 2  , 3  , 4  , 7  , 9  , 3  , 7  , 9  , 3  , 7  , 9  ];
+    var x =  [97 , 105, 111, 114, 115, 114, 111, 105, 97 , 133, 148, 166, 198, 190, 184, 181, 180, 181, 184, 190, 198, 136, 140, 158, 152, 128, 170, 160 ];
+    var y =  [10 , 23 , 36 , 49 , 62 , 75 , 88 , 101, 114, 56 , 62 , 48 , 10 , 23 , 36 , 49 , 62 , 75 , 88 , 101, 114, 89 , 108, 104, 92 , 15 , 10 , 30  ];
+    var ra = [2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2   ];
+//    var x =  [100, 180, 150, 100, 150, 170, 100, 180, 120, 100, 150, 170];
+//    var y =  [10 , 60 , 40 , 10 , 50 , 20 , 20 , 10 , 70 , 90 , 10 , 70 ];
+//    var ra = [5  , 2  , 3  , 4  , 7  , 9  , 3  , 7  , 9  , 3  , 7  , 9  ];
     //var y =  [10 , 60 , 40 , 10 , 50 , 20 , 20 , 10 , 70 , 90 , 10 , 70 , 90 ];
     //var ra = [5  , 2  , 3  , 4  , 7  , 9  , 3  , 7  , 9  , 3  , 7  , 9  , 3  ];
 //    var color = "rgb("+[r,g,b].join(",")+")";
@@ -102,7 +106,40 @@ function drawHeart(activate) {
     
     ctx.clearRect(0,0,mainCanvas.width,mainCanvas.height);
     
-    if(activate) {
+    if (activate) {
+    	var numLightsToDraw;
+    	trace(l);
+    	if (brightnessSliderValue < 50) {
+    		for(i=0; i<x.length; i++) {
+    			if(i % 2 == 0) {
+					ctx.beginPath();
+					var raScale = 1.0 + ((2.5 - 1.0)/(50.0 - 0.0))*(brightnessSliderValue);
+		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
+		      		ctx.fillStyle = color;
+		      		ctx.fill();
+		      	}
+		    }
+    	}
+    	else {
+    		for(i=0; i<x.length; i++) {
+    			if(i % 2 == 0) {
+					ctx.beginPath();
+					var raScale = 2.5 + ((3.0 - 2.5)/(50.0 - 0.0))*(brightnessSliderValue - 50.0);
+		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
+		      		ctx.fillStyle = color;
+		      		ctx.fill();
+		      	}
+		      	else {
+		      		ctx.beginPath();
+					var raScale = 1.0 + ((2.0 - 1.0)/(50.0 - 0.0))*(brightnessSliderValue - 50.0);
+		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
+		      		ctx.fillStyle = color;
+		      		ctx.fill();
+		      	}
+		    }
+    	}
+    }
+/*    if(activate) {
 	    var numLightsToDraw = Math.round(x.length*((l-l_old_min)/(l_old_max-l_old_min)));
 	    if( numLightsToDraw == 0) {numLightsToDraw = 1;}
 	    for(i=0; i<numLightsToDraw; i++) {
@@ -114,6 +151,7 @@ function drawHeart(activate) {
 		      
 		}
 	}
+*/
 //	ctx.drawImage(hiresPic,0,0,100,150);
     //ctx.fillStyle = "black";
 	//trace(mainCanvas.width);
@@ -244,7 +282,7 @@ var brightnessSliderTemplate = SLIDERS.HorizontalSlider.template(function($){ re
     		SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
     		
     		l = Math.round(l_old_min + ((l_old_max-l_old_min)/(100.0))*(this.data.value));
-    		
+    		brightnessSliderValue = this.data.value;
     		drawHeart(true);
     		
     	}}
