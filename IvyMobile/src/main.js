@@ -96,9 +96,9 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 var VASE_SERVER;
 var VASE_UUID = "";
 
-var POWERLEVEL 	  = "1";
+var POWERLEVEL 	  = "0";
 var FOODLEVEL 	  = "0";
-var WATERLEVEL 	  = "2";
+var WATERLEVEL 	  = "0";
 var PHLEVEL 	  = "0";
 var FILTERLEVEL   = "0";
 var STEMLEVEL 	  = "0";
