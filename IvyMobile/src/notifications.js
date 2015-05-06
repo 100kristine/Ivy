@@ -13,7 +13,7 @@ var POWERLEVEL = "0";
 var STATUS = "connecting...";
 
 var colorStyle = new Style({ color: 'white', font: '15px Avenir', horizontal: 'center', vertical: 'middle', });
-var whiteSkin = new Skin({fill:"#ea557b"});
+var whiteSkin = new Skin({fill:"white"});
 var greenSkin = new Skin({fill:"green"});
 var redSkin = new Skin({fill:"red"});
 var blueSkin = new Skin({fill:"blue"});
