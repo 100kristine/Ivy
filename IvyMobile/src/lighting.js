@@ -74,7 +74,11 @@ var ToggleTemplate = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
+// This canvas is for the circular lights on the flower 
 var mainCanvas =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:135,width:300});
+// This canvas is for the rectangular box as a hue reference for the user
+var mainCanvas2 =  new Canvas({ left: 0, right: 0, top: -150, bottom: 0,height:135,width:300});
+
 //var r = 255;
 //var g = 255;
 //var b = 255;
@@ -89,6 +93,7 @@ function drawHeart(activate) {
 //from http://calebevans.me/projects/jcanvas/docs/extending/
     // Just to keep our lines short
     var ctx = mainCanvas.getContext( "2d" );
+    var ctx2 = mainCanvas2.getContext( "2d" );
     var x =  [97 , 105, 111, 114, 115, 114, 111, 105, 97 , 133, 148, 166, 198, 190, 184, 181, 180, 181, 184, 190, 198, 136, 140, 158, 152, 128, 170, 160 ];
     var y =  [10 , 23 , 36 , 49 , 62 , 75 , 88 , 101, 114, 56 , 62 , 48 , 10 , 23 , 36 , 49 , 62 , 75 , 88 , 101, 114, 89 , 108, 104, 92 , 15 , 10 , 30  ];
     var ra = [2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2  , 2   ];
@@ -102,12 +107,16 @@ function drawHeart(activate) {
 	var s_paren = s+"%";
 	var l_paren = l+"%";
 	var color = "hsl("+[h,s_paren,l_paren].join(",")+")";
-    //trace(color);
+	var color2 = "hsl("+h+",100%,50%)";
     
     ctx.clearRect(0,0,mainCanvas.width,mainCanvas.height);
+    ctx2.clearRect(0,0,mainCanvas2.width,mainCanvas2.height);
     
     if (activate) {
-    	ctx.fillRect(230, 50, 25, 25);	// (x, y, width, height)
+    	// Vary the transparency of the lights
+    	ctx.globalAlpha = brightnessSliderValue / 100.0;
+    	
+    	ctx2.fillRect(230, 50, 25, 25);	// (x, y, width, height)
     	
     	if (brightnessSliderValue < 50) {
     		for(i=0; i<x.length; i++) {
@@ -117,6 +126,8 @@ function drawHeart(activate) {
 		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
 		      		ctx.fillStyle = color;
 		      		ctx.fill();
+		      		ctx2.fillStyle = color2;
+		      		ctx2.fill();
 		      	}
 		    }
     	}
@@ -128,6 +139,8 @@ function drawHeart(activate) {
 		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
 		      		ctx.fillStyle = color;
 		      		ctx.fill();
+		      		ctx2.fillStyle = color2;
+		      		ctx2.fill();
 		      	}
 		      	else {
 		      		ctx.beginPath();
@@ -135,6 +148,8 @@ function drawHeart(activate) {
 		      		ctx.arc(x[i], y[i], ra[i]*raScale, 0, 2 * Math.PI, false);
 		      		ctx.fillStyle = color;
 		      		ctx.fill();
+		      		ctx2.fillStyle = color2;
+		      		ctx2.fill();
 		      	}
 		    }
     	}
@@ -369,6 +384,7 @@ function getColumn(){
 					
 					plantPicture,
 					mainCanvas,
+					mainCanvas2,
 					//new Line({name:"fill", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
 					//typeFlowers,
 					//typeFlowers2,
