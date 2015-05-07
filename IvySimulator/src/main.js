@@ -62,11 +62,12 @@ Handler.bind("/gotAnalogSensorsResult", Object.create(Behavior.prototype, {
         	}}
 }));*/
 
+//var skins = [makeSkin("#32c0da"),makeSkin("#1eaf5f"),makeSkin("#868786"),makeSkin("#ee5c85")]
 
 var MainContainer = Column.template(function($) {
 	return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}),
 		contents: [
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'green',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "white",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -74,7 +75,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'green',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "#1eaf5f",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -82,7 +83,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'yellow',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "#32c0da",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -90,7 +91,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'blue',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "#ee5c85",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0, 
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -98,7 +99,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'purple',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "white",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -106,7 +107,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'maroon',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "#1eaf5f",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -114,7 +115,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'gray',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "#32c0da",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
@@ -122,7 +123,7 @@ var MainContainer = Column.template(function($) {
 				]
 			}),
 			
-			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'green',}),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: "#ee5c85",}),
 				contents: [
 					Label($, { left: 0, right: 0, top:0, bottom:0,
 					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
