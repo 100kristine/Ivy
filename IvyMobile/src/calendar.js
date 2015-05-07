@@ -22,7 +22,12 @@ var bold2 = new Style( { font: "25px Avenir Black", color:"white"} );
 var l3 = new Style( { font: "70px Avenir", color:"white" } );
 
 // ------------------- Backend sensors stuff -------------------
+var WATERLEVEL 	  = "0";
+var PHLEVEL 	  = "0";
 var QUANTITYLEVEL = "0";
+
+var WATERSTATUS 	= "None";
+var PHSTATUS 		= "None";
 var QUANTITYSTATUS 	= "None";
 
 /*Handler.bind("/delay", Object.create(Behavior.prototype, {
@@ -34,6 +39,36 @@ var QUANTITYSTATUS 	= "None";
 		},
 	},
 }));*/
+
+Handler.bind("/requestWater2", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getWaterLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			WATERLEVEL = json.water;
+			WATERSTATUS = json.waterStatus;
+			application.distribute("onWaterChanged");
+		},
+	},
+}));
+
+Handler.bind("/requestPH2", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getPHLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			PHLEVEL = json.ph;
+			PHSTATUS = json.phStatus;
+			application.distribute("onPHChanged");
+		},
+	},
+}));
 
 Handler.bind("/requestQuantity", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
@@ -113,10 +148,10 @@ scheduleButton.skin = mintSkin;
 var water = new Canvas({ left: 0, right: 0, top: 0, bottom: 0,height:100,width:15});
 drawWaterLevel();
 
-function drawWaterLevel() {
+function drawWaterLevel(multiplier) {
 
 	//Fix Me
-	var waterHeight = water.height/2;
+	var waterHeight = water.height*multiplier/100.0;
 
     var ctx = water.getContext( "2d" );
     ctx.fillStyle = "#868786";
@@ -281,9 +316,15 @@ var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,
 						  })
 						],
 						behavior: Object.create(Behavior.prototype, {
+							onWaterChanged: { value: function(application, data) {
+								drawWaterLevel(100-WATERLEVEL);
+							}},
+							onPHChanged: { value: function(application, data) {
+								var labelPHLevel = PHLEVEL/10 + 7;
+								//o1.string = "PH level is "+labelPHLevel.toPrecision(2).toString();
+							}},
 							onQuantityChanged: { value: function(application, data) {
 								quantityLabel.string = "Estimated: " + QUANTITYSTATUS + " flower(s)";
-								//trace(QUANTITYSTATUS+"\n");
 							}}
 						})
 					})

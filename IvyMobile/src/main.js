@@ -205,7 +205,9 @@ Handler.bind("/discover", Object.create(Behavior.prototype, {
 			application.invoke( new Message("/requestPower"	   ) );
 			application.invoke( new Message("/requestFood" 	   ) );
 			application.invoke( new Message("/requestWater"	   ) );
+			application.invoke( new Message("/requestWater2"   ) );
 			application.invoke( new Message("/requestPH"   	   ) );
+			application.invoke( new Message("/requestPH2"  	   ) );
 			application.invoke( new Message("/requestFilter"   ) );
 			application.invoke( new Message("/requestStem"     ) );
 			application.invoke( new Message("/requestQuantity" ) );
@@ -261,9 +263,6 @@ Server.prototype = Object.create(Object.prototype, {
 var ApplicationBehavior = Behavior.template({
 	onLaunch: function(application) {
 		var notifList = [ "IVY activated!" ];
-		trace(notifList.length+"\n");
-		trace(notifList[0].length+"\n");
-		
 	},
 	onDisplayed: function(application) {
 		application.discover("ivy_simulator");
