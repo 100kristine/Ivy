@@ -250,7 +250,7 @@ var scheduleCol = new Column({left:0, right:0, top:0, bottom:-10,height:100, wid
 						//	]})
 						]})
 
-var quantityLabel = new Label({left:20, right:5, top:20, height:10, string:"Estimated: 10 flowers in vase",style:l2,skin:whiteS});
+var quantityLabel = new Label({left:20, right:5, top:20, height:10, string:"Estimated: 10 flowers",style:l2,skin:whiteS});
 var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,skin: mintBorder,
 						contents:[new Label({left:5, right:5, top:5, height:40, string:"Flowers detected in vase",style:bold2,skin:mintSkin}),,
 						
@@ -282,8 +282,8 @@ var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,
 						],
 						behavior: Object.create(Behavior.prototype, {
 							onQuantityChanged: { value: function(application, data) {
-								quantityLabel.string = "Estimated: " + QUANTITYSTATUS + " flowers in vase";
-								trace(QUANTITYSTATUS+"\n");
+								quantityLabel.string = "Estimated: " + QUANTITYSTATUS + " flower(s)";
+								//trace(QUANTITYSTATUS+"\n");
 							}}
 						})
 					})

@@ -137,12 +137,15 @@ MainContainer.behaviors = new Array(8);
 
 MainContainer.behaviors[0] = Behavior.template({
 	onSolarChanged: function(content, result) {
+		var devicePowerStatus = "";
 	    if ( result == "0" ) {  
-            SOLARSTATUS = "Battery: "+ POWERLEVEL + "% "+"(Not Charging)";             
+            devicePowerStatus = "Battery: "+ POWERLEVEL + "% "+"(Not Charging)";
+            SOLARSTATUS = "Not Charging";         
         } else {
-        	SOLARSTATUS = "Battery: "+ POWERLEVEL + "% "+"(Charging)";
+        	devicePowerStatus = "Battery: "+ POWERLEVEL + "% "+"(Charging)";
+        	SOLARSTATUS = "Charging";
         }
-        content.string = SOLARSTATUS;
+        content.string = devicePowerStatus;
 	},
 })
 
@@ -157,11 +160,11 @@ MainContainer.behaviors[2] = Behavior.template({
 	onFoodChanged: function(content, result) {
 		FOODLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(FOODLEVEL) == 0) {
-			FOODSTATUS = "Food Level: No Food";
+			FOODSTATUS = "Food: None";
 		} else if (parseInt(FOODLEVEL) <= 50) {
-			FOODSTATUS = "Food Level: Low Food";
+			FOODSTATUS = "Food: Low";
 		} else {
-			FOODSTATUS = "Food Level: Plenty of Food";
+			FOODSTATUS = "Food: Plenty";
 		}
         content.string = FOODSTATUS;
 	},
@@ -171,13 +174,13 @@ MainContainer.behaviors[3] = Behavior.template({
 	onWaterChanged: function(content, result) {
 		WATERLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(WATERLEVEL) == 0) {
-			WATERSTATUS = "Water Level: Empty!";
+			WATERSTATUS = "Water: Empty!";
 		} else if (parseInt(WATERLEVEL) <= 40) {
-			WATERSTATUS = "Water Level: Too Low";
+			WATERSTATUS = "Water: Too Low";
 		} else if (parseInt(WATERLEVEL) <= 85) {
-			WATERSTATUS = "Water Level: Good";
+			WATERSTATUS = "Water: Good";
 		} else {
-			WATERSTATUS = "Water Level: Too High";
+			WATERSTATUS = "Water: Too High";
 		}
         content.string = WATERSTATUS;
 	},
@@ -187,15 +190,15 @@ MainContainer.behaviors[4] = Behavior.template({
 	onPHChanged: function(content, result) {
 		PHLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(PHLEVEL) < 20) {
-			PHSTATUS = "pH Level: Very Acidic";
+			PHSTATUS = "pH: Very Acidic";
 		} else if (parseInt(PHLEVEL) < 40) {
-			PHSTATUS = "pH Level: Acidic";
+			PHSTATUS = "pH: Acidic";
 		} else if (parseInt(PHLEVEL) <= 60) {
-			PHSTATUS = "pH Level: Neutral";
+			PHSTATUS = "pH: Neutral";
 		} else if (parseInt(PHLEVEL) <= 80) {
-			PHSTATUS = "pH Level: Basic";
+			PHSTATUS = "pH: Basic";
 		} else {
-			PHSTATUS = "pH Level: Very Basic";
+			PHSTATUS = "pH: Very Basic";
 		}
         content.string = PHSTATUS;
 	},
@@ -205,11 +208,11 @@ MainContainer.behaviors[5] = Behavior.template({
 	onFilterChanged: function(content, result) {
 		FILTERLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(FILTERLEVEL) < 51) {
-			FILTERSTATUS = "Filter Status: Dirty";
+			FILTERSTATUS = "Filter: Dirty";
 		} if (parseInt(FILTERLEVEL) > 50) {
-			FILTERSTATUS = "Filter Status: Clean";
+			FILTERSTATUS = "Filter: Clean";
 		} if (parseInt(FILTERLEVEL) == 0) {
-			FILTERSTATUS = "Filter Status: Change now!";
+			FILTERSTATUS = "Filter: Change now!";
 		} 
         content.string = FILTERSTATUS;
 	},
@@ -219,11 +222,11 @@ MainContainer.behaviors[6] = Behavior.template({
 	onStemChanged: function(content, result) {
 		STEMLEVEL = (result*100).toString().substring( 0, 8 );
 		if (parseInt(STEMLEVEL) < 51) {
-			STEMSTATUS = "Stem Level: Short";
+			STEMSTATUS = "Stem: Short";
 		} if (parseInt(STEMLEVEL) > 50) {
-			STEMSTATUS = "Stem Level: Long";
+			STEMSTATUS = "Stem: Long";
 		} if (parseInt(STEMLEVEL) == 0) {
-			STEMSTATUS = "Stem Level: 0";
+			STEMSTATUS = "Stem: Gone";
 		} 
         content.string = STEMSTATUS;
 	},
