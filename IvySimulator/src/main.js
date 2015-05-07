@@ -66,37 +66,69 @@ Handler.bind("/gotAnalogSensorsResult", Object.create(Behavior.prototype, {
 var MainContainer = Column.template(function($) {
 	return { left: 0, right: 0, top: 0, bottom: 0, skin: new Skin({ fill: 'white',}),
 		contents: [
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'green',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[0]).prototype), string: '---', }),
+				]
+			}),
 			
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'green',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[1]).prototype), string: '---', }),
+				]
+			}),
 			
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[2]).prototype), string: '---', }),
-		
-			Label($, { left: 0, right: 0, top:0, bottom:0, 
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[3]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'yellow',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[2]).prototype), string: '---', }),
+				]
+			}),
 			
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[4]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'blue',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0, 
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[3]).prototype), string: '---', }),
+				]
+			}),
 			
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[5]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'purple',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[4]).prototype), string: '---', }),
+				]
+			}),
 			
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[6]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'maroon',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[5]).prototype), string: '---', }),
+				]
+			}),
 			
-			Label($, { left: 0, right: 0, top:0, bottom:0,
-			style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
-			behavior: Object.create((MainContainer.behaviors[7]).prototype), string: '---', }),
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'gray',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[6]).prototype), string: '---', }),
+				]
+			}),
+			
+			Column($, { left: 0, right: 0, top:0, bottom:0, skin: new Skin({ fill: 'green',}),
+				contents: [
+					Label($, { left: 0, right: 0, top:0, bottom:0,
+					style: new Style({ color: 'black', font: '24px', horizontal: 'null', vertical: 'null', }),
+					behavior: Object.create((MainContainer.behaviors[7]).prototype), string: '---', }),
+				]
+			}),
 		],
 	}
 });

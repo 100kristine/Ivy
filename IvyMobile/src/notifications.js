@@ -368,14 +368,14 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 						//trace("notif: " + notifList + "\n");
 						//trace("button: " + buttonArr + "\n");
 						var flagFood = false;
-						var indexFood = 0;
+						//var indexFood = 0;
 						if (FOODSTATUSPREV == FOODSTATUS) {
 							flagFood = true;
 						} else {
 							for (var len = 0; len < notifList.length; len++) {
 								 if (notifList[len].length >= 4 && notifList[len].substring(0,4) == "Food") {
 								 	flagFood = true;
-								 	indexFood = len;
+								 	//indexFood = len;
 								 }
 							}
 						}
@@ -384,7 +384,7 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 							FOODSTATUSPREV = FOODSTATUS;
 							trace(FOODSTATUS+"\n");
 							notifList.push(FOODSTATUS);
-							var l = makeLine(notifList[notifList.length-1]);
+							var l = makeLine(indexFood);
 							n.add(l);
 							lineList.push(l);
 							
