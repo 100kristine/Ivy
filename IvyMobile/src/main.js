@@ -170,7 +170,7 @@ Handler.bind("/getStemLevel", Object.create(Behavior.prototype, {
 Handler.bind("/getQuantityLevel", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			message.responseText = JSON.stringify( { quantity: QUANTITYLEVEL, QuantityStatus: QUANTITYSTATUS } );
+			message.responseText = JSON.stringify( { quantity: QUANTITYLEVEL, quantityStatus: QUANTITYSTATUS } );
 			message.status = 200;
 		},
 	},
@@ -203,12 +203,12 @@ Handler.bind("/discover", Object.create(Behavior.prototype, {
 			var message = Vase_Server.createMessage("getData", { uuid: VASE_UUID });
 			handler.invoke(message, Message.JSON);
 			application.invoke( new Message("/requestPower"	   ) );
-			//application.invoke( new Message("/requestFood" 	   ) );
+			application.invoke( new Message("/requestFood" 	   ) );
 			application.invoke( new Message("/requestWater"	   ) );
-			//application.invoke( new Message("/requestPH"   	   ) );
-			//application.invoke( new Message("/requestFilter"   ) );
-			//application.invoke( new Message("/requestStem"     ) );
-			//application.invoke( new Message("/requestQuantity" ) );
+			application.invoke( new Message("/requestPH"   	   ) );
+			application.invoke( new Message("/requestFilter"   ) );
+			application.invoke( new Message("/requestStem"     ) );
+			application.invoke( new Message("/requestQuantity" ) );
 			/* *** invoke application request[insert] here to invoke in another tab *** */
 		},
 	},

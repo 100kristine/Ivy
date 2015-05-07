@@ -124,13 +124,13 @@ MainContainer.behaviors[1] = Behavior.template({
 MainContainer.behaviors[2] = Behavior.template({
 	onFoodChanged: function(content, result) {
 		FOODLEVEL = (result*100).toString().substring( 0, 8 );
-		if (parseInt(FOODLEVEL) < 51) {
-			FOODSTATUS = "Food Level: Low Food";
-		} if (parseInt(FOODLEVEL) > 50) {
-			FOODSTATUS = "Food Level: Plenty of Food";
-		} if (parseInt(FOODLEVEL) == 0) {
+		if (parseInt(FOODLEVEL) == 0) {
 			FOODSTATUS = "Food Level: No Food";
-		} 
+		} else if (parseInt(FOODLEVEL) <= 50) {
+			FOODSTATUS = "Food Level: Low Food";
+		} else {
+			FOODSTATUS = "Food Level: Plenty of Food";
+		}
         content.string = FOODSTATUS;
 	},
 })
@@ -138,13 +138,15 @@ MainContainer.behaviors[2] = Behavior.template({
 MainContainer.behaviors[3] = Behavior.template({
 	onWaterChanged: function(content, result) {
 		WATERLEVEL = (result*100).toString().substring( 0, 8 );
-		if (parseInt(WATERLEVEL) < 51) {
-			WATERSTATUS = "Water Level: Time to Change";
-		} if (parseInt(WATERLEVEL) > 50) {
-			WATERSTATUS = "Water Level: Healthy";
-		} if (parseInt(WATERLEVEL) == 0) {
-			WATERSTATUS = "Water Level: Empty";
-		} 
+		if (parseInt(WATERLEVEL) == 0) {
+			WATERSTATUS = "Water Level: Empty!";
+		} else if (parseInt(WATERLEVEL) <= 40) {
+			WATERSTATUS = "Water Level: Too Low";
+		} else if (parseInt(WATERLEVEL) <= 85) {
+			WATERSTATUS = "Water Level: Good";
+		} else {
+			WATERSTATUS = "Water Level: Too High";
+		}
         content.string = WATERSTATUS;
 	},
 })

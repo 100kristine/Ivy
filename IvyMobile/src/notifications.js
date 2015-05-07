@@ -57,6 +57,12 @@ Handler.bind("/delay", Object.create(Behavior.prototype, {
 }));
 
 Handler.bind("/requestPower", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message( "/delay?duration=500" ) );
+			handler.invoke( new Message("/getPowerLevel"), Message.JSON );
+		},
+	},
 	onComplete: { value: 
 		function(handler, message, json) {
 			POWERLEVEL = json.power;
@@ -64,15 +70,29 @@ Handler.bind("/requestPower", Object.create(Behavior.prototype, {
 			application.distribute("onDevicesChanged");
 		},
 	},
+}));
+
+Handler.bind("/requestFood", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			handler.invoke( new Message( "/delay?duration=500" ) );
-			handler.invoke( new Message("/getPowerLevel"), Message.JSON );
+			handler.invoke( new Message("/getFoodLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			FOODLEVEL = json.food;
+			FOODSTATUS = json.foodStatus;
+//			application.distribute("onFoodChanged");
 		},
 	},
 }));
 
 Handler.bind("/requestWater", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getWaterLevel"), Message.JSON );
+		},
+	},
 	onComplete: { value: 
 		function(handler, message, json) {
 			WATERLEVEL = json.water;
@@ -80,13 +100,67 @@ Handler.bind("/requestWater", Object.create(Behavior.prototype, {
 			application.distribute("onWaterChanged");
 		},
 	},
+}));
+
+Handler.bind("/requestPH", Object.create(Behavior.prototype, {
 	onInvoke: { value: 
 		function(handler, message) {
-			handler.invoke( new Message("/getWaterLevel"), Message.JSON );
+			handler.invoke( new Message("/getPHLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			PHLEVEL = json.ph;
+			PHSTATUS = json.phStatus;
+//			application.distribute("onPHChanged");
 		},
 	},
 }));
 
+Handler.bind("/requestFilter", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getFilterLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			FILTERLEVEL = json.filter;
+			FILTERSTATUS = json.filterStatus;
+//			application.distribute("onFilterChanged");
+		},
+	},
+}));
+
+Handler.bind("/requestStem", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getStemLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			STEMLEVEL = json.stem;
+			STEMSTATUS = json.stemStatus;
+//			application.distribute("onStemChanged");
+		},
+	},
+}));
+
+Handler.bind("/requestQuantity", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getQuantityLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			QUANTITYLEVEL = json.quantity;
+			QUANTITYSTATUS = json.quantityStatus;
+//			application.distribute("onQuantityChanged");
+		},
+	},
+}));
 
 function makeLabel(str,sty){ return new Label({left:0, right:0, string:str, style:sty}); }
 
@@ -221,7 +295,7 @@ MainContainer.behaviors[1] = Behavior.template({
 		if (parseInt(POWERLEVEL) < 21) {
 			STATUS = "Low Battery";
 		}
-		column.string ="Status: " + STATUS;
+		column.string = "Status: blah" + STATUS;
 		//column.first.string = "string";
 	},
 })
@@ -239,18 +313,14 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 									makeLabel("Home",l3)
 								]
 							}),
-							//new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"#1eaf5f"})}),
 							new Line({name:"heading", left:0, right:0, top:0, height:40, skin: new Skin({fill:"white"}),
 								contents:[
 									new Label({bottom:-10, left: 10, string:"Notifications", style:l2})
 								]
 							}),
-							//flowerAmounts,
-							//new Line({name:"fill", left:0, right:0, top:0, height:10, skin: new Skin({fill:"white"})}),
 							
 							//new Line({name:"labels", left:0, right:0, top:10, bottom:0, skin: new Skin({fill:"black"}),
 							//	contents:[makeLabel("None",l1),makeLabel("One",l1),makeLabel("Few",l1),makeLabel("Many",l1)]}),
-							//mainContainer,
 							notifications,
 							mainContainer,
 							//new mainContainer({ left:0, right:0, bottom:0, skin: new Skin({fill:"red"}),}),
@@ -280,6 +350,7 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 									}}
 								})
 							})
+							
 							lineList[z].add(b)
 							buttonArr.push(b)
 						}
@@ -290,7 +361,9 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 						//trace("line: " + lineList + "\n");
 						//trace("notif: " + notifList + "\n");
 						//trace("button: " + buttonArr + "\n");
+						
 						if (false) {
+							
 							notifList.push(WATERSTATUS);
 							var l = makeLine(i)
 							n.add(l)
@@ -315,8 +388,7 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 						}
 						
 						//col.add(new Line({top:6, height: 45, left:0, right:0, name: "line", skin:new Skin({fill:"#939393"}), 
-						//contents:[makeLabel("No notifications!", l1));
-						//mainContainer,
+							//contents:[makeLabel("No notifications!", l1));
 					}},
 				})
 });
