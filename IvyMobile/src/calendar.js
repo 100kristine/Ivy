@@ -250,7 +250,7 @@ var mySwitch = SWITCHES.SwitchButton.template(function($){ return{
 			//waterCol;
 			var temp = [o1,o2,o3];
 			var temp2 = [i1,i2,i3];
-			if (this.data.value == 0){
+			if (this.data.value == 1){
 				for (i=0; i<3; i++){
 					oCol.add(temp[i])	
 					oCol.remove(temp2[i])	
@@ -265,7 +265,7 @@ var mySwitch = SWITCHES.SwitchButton.template(function($){ return{
 	}}})
 }});
 
-var theSwitch = new mySwitch({ value: 1 });
+var theSwitch = new mySwitch({ value: 0 });
 
 var plantPicture = new Picture({ left:0, right:0, top:0, height:140, width:150,
 									url: "flowerVase.png" });
@@ -284,7 +284,7 @@ var scheduleCol = new Column({left:0, right:0, top:0, bottom:-10,height:100, wid
 						//new Column({left:0, right:0, top:0, bottom:0,height:5, width:20,skin: whiteS, contents:[
 						//	]})
 						]})
-
+var waterLabel = new Label({left:5, right:0, top:10, height:10, string:"40%",style:l2,skin:whiteS});
 var quantityLabel = new Label({left:20, right:5, top:20, height:10, string:"Estimated: 10 flowers",style:l2,skin:whiteS});
 var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,skin: mintBorder,
 						contents:[new Label({left:5, right:5, top:5, height:40, string:"Flowers detected in vase",style:bold2,skin:mintSkin}),,
@@ -295,7 +295,7 @@ var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,
 									contents: [	
 										new Label({left:5, right:0, top:10, height:10, string:"Water Level:",style:bold,skin:whiteS}),
 										//Fix Me
-										new Label({left:5, right:0, top:10, height:10, string:"40%",style:l2,skin:whiteS}),
+										waterLabel,
 										new Label({left:5, right:0, top:40, height:10, string:"Reminders",style:bold,skin:whiteS}),
 										new Label({left:5, right:0, top:10, height:10, string:"triggered at:",style:bold,skin:whiteS}),
 										//Fix Me
@@ -318,6 +318,8 @@ var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,
 						behavior: Object.create(Behavior.prototype, {
 							onWaterChanged: { value: function(application, data) {
 								drawWaterLevel(100-WATERLEVEL);
+								
+								waterLabel.string = Math.round(WATERLEVEL) + "%";
 							}},
 							onPHChanged: { value: function(application, data) {
 								var labelPHLevel = PHLEVEL/10 + 7;

@@ -1,18 +1,19 @@
 // Dependencies
 var THEME = require('themes/flat/theme');
 var BUTTONS = require('controls/buttons');
+var mint = "#95cfb0";
 
 // Styling
 var whiteSkin = new Skin( { fill:"white" } );//"#ea557b"
 var titlelabelStyle = new Style( { font: "30px Avenir", color:"white" } );
 var titleLabelStyle = new Style( { font: "20px Avenir", color:"#868786" } );
 var labelStyle = new Style( { font: "15px Avenir", color:"#868786" } );
-var captionLabelStyle = new Style( { font: "11px Avenir", color:"#868786" } );
+var captionLabelStyle = new Style( { font: "11px Avenir", color:"white" } );
 var buttonStyle = new Style( { font: "17px Avenir", color:"green" } );
 var whiteS = new Skin({
     fill:"#4e4e4e", 
-    borders:{left:5, right:5, top:5, bottom:5}, 
-    stroke:"black"
+    borders:{left:2, right:2, top:2, bottom:2}, 
+    stroke:mint
 });
 var l3 = new Style( { font: "55px Avenir", color:"white" } );
 
@@ -24,16 +25,16 @@ function makeLabel(str,sty){
 }
 
 // Labels
-var orderFlowerLabel = new Label({left:15, top: 5, height: 10, string: "Order Flowers:", style: titleLabelStyle});
-var detectedAddressLabel1 = new Label({left:15, top: 5, height: 10, string: "Street Address", style: labelStyle});
-var detectedAddressLabel2 = new Label({left:15, top: 5, height: 10, string: "City, Zipcode", style: labelStyle});
-var orderLabel = new Label({left:15, top: 5, height: 5, string: "Flowers are delivered in two days", style: labelStyle});
+var orderFlowerLabel = new Label({left:15, top: 0, height: 10, string: "Order Flowers:", style: titleLabelStyle});
+var detectedAddressLabel1 = new Label({left:15, top:0, height: 10, string: "Street Address", style: labelStyle});
+var detectedAddressLabel2 = new Label({left:15, top: 0, height: 10, string: "City, Zipcode", style: labelStyle});
+var orderLabel = new Label({left:15, top: 20, height: 5, string: "Flowers are delivered in two days", style: labelStyle});
 var orderedLabel = new Label({right: 15, left:15, top: 5, height: 5, string: "", style: labelStyle});
-var friendLabel = new Label({left:15, top: 5, height: 10, bottom: 5, string: "Social: See What Friends Have Ordered", style: titleLabelStyle});
-var socialLabel = new Label({left:15, top: 5, height: 10, string: "What friends have ordered recently:", style: labelStyle});
-var friend1Label = new Label({left:15, top: 5, height: 10, string: "Automated:", style: labelStyle})
-var friend2Label = new Label({left:15, top: 5, height: 10, string: "Automated:", style: labelStyle})
-var friend3Label = new Label({left:15, top: 5, height: 10, string: "Automated:", style: labelStyle})
+var friendLabel = new Label({left:15, top: -20, height: 10, bottom: 5, string: "Social: See What Friends Have Ordered", style: titleLabelStyle});
+var socialLabel = new Label({left:15, top: -20, height: 10, string: "What friends have ordered recently:", style: labelStyle});
+var friend1Label = new Label({left:15, top: 0, height: 10, string: "Automated:", style: labelStyle})
+var friend2Label = new Label({left:15, top: 0, height: 10, string: "Automated:", style: labelStyle})
+var friend3Label = new Label({left:15, top: 0, height: 10, string: "Automated:", style: labelStyle})
 
 // Buttons
 var detectAddressButton = BUTTONS.Button.template(function($){ return{
@@ -120,7 +121,7 @@ var detectAddressButton = BUTTONS.Button.template(function($){ return{
 }});
 
 var orderButton = BUTTONS.Button.template(function($){ return{
-    left: 80, right: 80, height:15, top:5,
+    left: 80, right: 80, height:15, top:10,
     contents: [
         new Label({left:0, right:0, height:20, string:"Order Flowers", style: buttonStyle})
     ],
@@ -202,13 +203,13 @@ var orderButton = BUTTONS.Button.template(function($){ return{
 //var map = new Picture({right:0, left:100, top:3, height: 100, width: 100}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
 var map = new Picture({right:0, left:0, top:7, height: 60, width: 60}, "http://img2.wikia.nocookie.net/__cb20150309221525/logopedia/images/e/e1/Googlemapslogo2014.png");
 
-var urlList = ["jimmy.png","sean.png","kristine.png","niha.png",
-                "tulip.png","orchid.png","rose.png","daisy.png"];
+var urlList = ["jimmy.png","sean.png","kristine.png","niha.png"];
+//                "tulip.png","orchid.png","rose.png","daisy.png"];
 
 var gridClickable = BUTTONS.Button.template(function($){ return{
     top:0, bottom:0, left:0, right:0,name:"off",skin: whiteS,
     contents:[
-        new Picture({left:0, right:0, top:0, height:40, width:40, url: $.url, name: $.name})
+        new Picture({left:0, right:0, top:10, height:40, width:40, url: $.url, name: $.name})
     ],
     behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
         onTap: { value:  function(button){
@@ -223,7 +224,7 @@ function selectableGrid(){
         };
         
     function makeLine(start,stop){
-        var temp = new Line({left:0, right:0, top:0, bottom:0, height:0, width: 0, skin:whiteS});
+        var temp = new Line({left:0, right:0, top:0, bottom:0, skin:whiteS});
         
         for (i=start; i<stop+1; i++){
             temp.add(makeButton(urlList[i]));   
@@ -240,12 +241,12 @@ function selectableGrid(){
         return temp;        
     }
     
-    var col= new Column({left:0, right:0, top:0, bottom:0, height:80, skin: whiteS, 
+    var col= new Column({left:0, right:0, top:-20, bottom:0, height:80, skin: whiteS, 
                 contents:[
                 ]});
     
     col.add(makeLine2());           
-    for (j=0;j<2; j++ ){
+    for (j=0;j<1; j++ ){
         col.add(makeLine(j+(3*j),j+(3*(j+1))));
     }
     
@@ -258,12 +259,12 @@ function selectableGrid(){
 // Make Column for main.js
 function getColumn(){
 
-    return new Column({name:"social", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"white"}), 
+    return new Column({name:"social", left:0, right:0, top:0, bottom:50, skin: new Skin({fill:"white"}), 
                 contents:[
                     //new Line({name:"fill", left:0, right:0, top:5, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
-                    new Line({left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#1eaf5f"}),
+                    new Line({left:0, right:0, top:0, bottom:0, height:20, skin: new Skin({fill:"#1eaf5f"}),
                         contents:[
-                            makeLabel("Ordering/Social",l3)
+                            makeLabel("Delivery/Social",l3)
                         ]
                     }),
                     orderFlowerLabel,
