@@ -20,8 +20,38 @@ var l2 = new Style( { font: "25px Avenir", color:grey, horizontal:"left"} );
 var bold = new Style( { font: "25px Avenir Black", color:"#1eaf5f", horizontal:"left"} );
 var bold2 = new Style( { font: "25px Avenir Black", color:"white"} );
 var l3 = new Style( { font: "70px Avenir", color:"white" } );
-//Backend sensors stuff
-//
+
+// ------------------- Backend sensors stuff -------------------
+var QUANTITYLEVEL = "0";
+var QUANTITYSTATUS 	= "None";
+
+/*Handler.bind("/delay", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			var query = parseQuery( message.query );
+			var duration = query.duration;
+			handler.wait( duration )
+		},
+	},
+}));*/
+
+Handler.bind("/requestQuantity", Object.create(Behavior.prototype, {
+	onInvoke: { value: 
+		function(handler, message) {
+			handler.invoke( new Message("/getQuantityLevel"), Message.JSON );
+		},
+	},
+	onComplete: { value: 
+		function(handler, message, json) {
+			QUANTITYLEVEL = json.quantity;
+			QUANTITYSTATUS = json.quantityStatus;
+			application.distribute("onQuantityChanged");
+		},
+	},
+}));
+
+// -------------------------------------------------------------
+
 function makeLabel(str,sty){
   return new Label({left:5, right:5, top:10, height:50, string:str,style:sty,skin:whiteS});
 }
@@ -234,17 +264,26 @@ var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,
 										new Label({left:5, right:0, top:10, height:10, string:"triggered at:",style:bold,skin:whiteS}),
 										//Fix Me
 										new Label({left:5, right:0, top:10, height:10, string:"30%",style:l2,skin:whiteS})
-									]}),
-								]}),
+									]
+								}),
+							]
+						  }),
 						  new Column({left:0, right:0, top:20, bottom:0,height:0,
 							contents:[
 									new Label({left:20, right:5, top:20, height:10, string:"Autodetect",style:bold,skin:whiteS}),
 									//Fix Me
-									new Label({left:20, right:5, top:20, height:10, string:"Estimated: 10 flowers in vase",style:l2,skin:whiteS}),
+									new Label({left:20, right:5, top:20, height:10, string:"Estimated: "+ QUANTITYSTATUS + " flowers in vase",style:l2,skin:whiteS}),
 									//Fix Me
 									new Label({left:20, right:5, top:20, height:10, string:"Types: Roses,Tulips,Lilies",style:l2,skin:whiteS}),
-								]})
-						]})
+							]
+						  })
+						],
+						behavior: Object.create(Behavior.prototype, {
+							onQuantityChanged: { value: function(application, data) {
+								trace(QUANTITYSTATUS);
+							}}
+						})
+					})
 
 var i1 = new Label({left:5, right:5, top:20, height:10, string:"You can also use your IVY vase",style:l2,skin:whiteS}),
 var i2 = new Label({left:5, right:5, top:20, height:10, string:"to start a hydroponic garden.",style:l2,skin:whiteS}),

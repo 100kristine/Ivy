@@ -55,12 +55,12 @@ Handler.bind("/gotAnalogSensorsResult", Object.create(Behavior.prototype, {
         	}}
 }));
 
-Handler.bind("/gotLightingSensorsResult", Object.create(Behavior.prototype, {
+/*Handler.bind("/gotLightingSensorsResult", Object.create(Behavior.prototype, {
 	onInvoke: { value: function( handler, message ){
         		var result = message.requestObject;  
         		application.distribute( "onLightingSensorsValueChanged", result ); 		
         	}}
-}));
+}));*/
 
 
 var MainContainer = Column.template(function($) {
@@ -202,13 +202,20 @@ MainContainer.behaviors[7] = Behavior.template({
 		var quantityFlowers = Math.round(((13.0 - 0.0)/(1.0 - 0.0)) * (result));
 		
 		QUANTITYLEVEL = quantityFlowers.toString();
-		if (parseInt(QUANTITYLEVEL) < 12) {
+		/*if (parseInt(QUANTITYLEVEL) < 12) {
 			QUANTITYSTATUS = "There are " + QUANTITYLEVEL + " flowers.";
 		} else if (parseInt(QUANTITYLEVEL) == 12) {
 			QUANTITYSTATUS = "There are a dozen flowers.";
 		} else {
 			QUANTITYSTATUS = "There are over a dozen flowers.";
-		} 
+		} */
+		if (parseInt(QUANTITYLEVEL) < 12) {
+			QUANTITYSTATUS = QUANTITYLEVEL;
+		} else if (parseInt(QUANTITYLEVEL) == 12) {
+			QUANTITYSTATUS = "a dozen";
+		} else {
+			QUANTITYSTATUS = "over a dozen";
+		}
         content.string = QUANTITYSTATUS;
 	},
 })
@@ -220,13 +227,13 @@ MainContainer.behaviors[7] = Behavior.template({
   	   	 with the given pin numbers. Pin types and directions
   		 are set within the bll.	*/
 application.invoke( new MessageWithObject( "pins:configure", {
-	lightingSensors: {
+	/*lightingSensors: {
     	require: "lightingSensors",
     	pins: {
     		brightness: { pin: 48 },
     		hue: 		{ pin: 47 }
 		},
-	},
+	},*/
     analogSensors: {
         require: "analog",
         pins: {
@@ -272,12 +279,12 @@ application.invoke( new MessageWithObject( "pins:/analogSensors/read?" +
 		callback: "/gotAnalogSensorsResult"
 } ) ) );
 
-application.invoke( new MessageWithObject( "pins:/lightingSensors/read?" + 
+/*application.invoke( new MessageWithObject( "pins:/lightingSensors/read?" + 
 	serializeQuery( {
 		repeat: "on",
 		interval: 20,
 		callback: "/gotLightingSensorsResult"
-} ) ) );
+} ) ) );*/
 
 application.behavior = new ApplicationBehavior();
 application.add( new MainContainer() );

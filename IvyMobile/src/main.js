@@ -260,6 +260,10 @@ Server.prototype = Object.create(Object.prototype, {
 		
 var ApplicationBehavior = Behavior.template({
 	onLaunch: function(application) {
+		var notifList = [ "IVY activated!" ];
+		trace(notifList.length+"\n");
+		trace(notifList[0].length+"\n");
+		
 	},
 	onDisplayed: function(application) {
 		application.discover("ivy_simulator");
