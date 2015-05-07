@@ -318,12 +318,7 @@ var vaseCol = new Column({left:0, right:0, top:0, bottom:-40,height:5, width:50,
 						behavior: Object.create(Behavior.prototype, {
 							onWaterChanged: { value: function(application, data) {
 								drawWaterLevel(100-WATERLEVEL);
-								
 								waterLabel.string = Math.round(WATERLEVEL) + "%";
-							}},
-							onPHChanged: { value: function(application, data) {
-								var labelPHLevel = PHLEVEL/10 + 7;
-								//o1.string = "PH level is "+labelPHLevel.toPrecision(2).toString();
 							}},
 							onQuantityChanged: { value: function(application, data) {
 								quantityLabel.string = "Estimated: " + QUANTITYSTATUS + " flower(s)";
@@ -362,7 +357,14 @@ var waterCol = new Column({left:0, right:0, top:0, bottom:-60,height:5, width:50
 								
 								]}),
 						oCol
-						]});
+						],
+						behavior: Object.create(Behavior.prototype, {
+							onPHChanged: { value: function(application, data) {
+								var labelPHLevel = PHLEVEL/100.0 + 7.0;
+								o1.string = "PH level is "+labelPHLevel.toPrecision(2).toString();
+							}},
+						})
+});
 
 
 
