@@ -310,6 +310,9 @@ var mainContainer = new MainContainer();
 		 
 var buttonArr = [];
 
+var noNotifLabel = makeLabel("No new notifications!", l1);
+var noNotifFlag = false;
+
 var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"white"}),
 				contents:[
 					new Column({name:"flower", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:"white"}), 
@@ -344,6 +347,12 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 						for(z = 0; z < lineList.length; z++) {
 							var b = new deleteButton({name:"deleteButton",
 								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
 									onTap: { value:  function(button){
 										var num = buttonArr.indexOf(button);
 										column.flower.notifications.n.empty(num, num+1)
@@ -351,8 +360,10 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 										notifList.splice(num, 1);
 										lineList.splice(num, 1);
 										if (buttonArr.length == 0) {
-											column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
 										}
+										i--;
 									}}
 								})
 							})
@@ -368,28 +379,35 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 						//trace("notif: " + notifList + "\n");
 						//trace("button: " + buttonArr + "\n");
 						var flagFood = false;
-						//var indexFood = 0;
-						if (FOODSTATUSPREV == FOODSTATUS) {
+						var indexFood = 0;
+						
+						for (var len = 0; len < notifList.length; len++) {
+							 if (notifList[len].length >= 4 && notifList[len].substring(0,4) == "Food") {
+							 	flagFood = true;
+							 	indexFood = len;
+							 }
+						}
+						if (!flagFood && FOODSTATUSPREV == FOODSTATUS) {
 							flagFood = true;
-						} else {
-							for (var len = 0; len < notifList.length; len++) {
-								 if (notifList[len].length >= 4 && notifList[len].substring(0,4) == "Food") {
-								 	flagFood = true;
-								 	//indexFood = len;
-								 }
-							}
 						}
 						
 						if (!flagFood) {
 							FOODSTATUSPREV = FOODSTATUS;
 							trace(FOODSTATUS+"\n");
 							notifList.push(FOODSTATUS);
-							var l = makeLine(indexFood);
+							var l = makeLine(i);
+							i++;
 							n.add(l);
 							lineList.push(l);
 							
 							var b = new deleteButton({ name:"deleteButton",
 								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
 									onTap: { value:  function(button){
 										var num = buttonArr.indexOf(button);
 										column.flower.notifications.n.empty(num, num+1)
@@ -397,13 +415,51 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 										notifList.splice(num, 1);
 										lineList.splice(num, 1);
 										if (buttonArr.length == 0) {
-											column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
 										}
+										i--;
 									}}
 								})
 							})
 							lineList[notifList.length -1].add(b)
 							buttonArr.push(b)
+						}
+						else {
+							if (FOODSTATUSPREV != FOODSTATUS && !noNotifFlag) {
+								column.flower.notifications.n.empty(indexFood, indexFood+1)
+								buttonArr.splice(indexFood, 1);
+								notifList.splice(indexFood, 1);
+								lineList.splice(indexFood, 1);
+								if (buttonArr.length == 0) {
+									column.flower.notifications.n.add(noNotifLabel);
+									noNotifFlag = true;
+								}
+								i--;
+								
+								var b = new deleteButton({ name:"deleteButton",
+								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
+									onTap: { value:  function(button){
+										var num = buttonArr.indexOf(button);
+										column.flower.notifications.n.empty(num, num+1)
+										buttonArr.splice(num, 1);
+										notifList.splice(num, 1);
+										lineList.splice(num, 1);
+										if (buttonArr.length == 0) {
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
+										}
+										i--;
+									}}
+								})
+								})
+							}
 						}
 						//col.add(new Line({top:6, height: 45, left:0, right:0, name: "line", skin:new Skin({fill:"#939393"}), 
 							//contents:[makeLabel("No notifications!", l1));
@@ -411,27 +467,34 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 					onWaterChanged: { value: function(application, data) {
 						var flagWater = false;
 						var indexWater = 0;
-						if (WATERSTATUSPREV == WATERSTATUS) {
+						
+						for (var len = 0; len < notifList.length; len++) {
+							 if (notifList[len].length >= 5 && notifList[len].substring(0,5) == "Water") {
+							 	flagWater = true;
+							 	indexWater = len;
+							 }
+						}
+						if (!flagWater && WATERSTATUSPREV == WATERSTATUS) {
 							flagWater = true;
-						} else {
-							for (var len = 0; len < notifList.length; len++) {
-								 if (notifList[len].length >= 5 && notifList[len].substring(0,5) == "Water") {
-								 	flagWater = true;
-								 	indexWater = len;
-								 }
-							}
 						}
 						
 						if (!flagWater) {
 							WATERSTATUSPREV = WATERSTATUS;
 							trace(WATERSTATUS+"\n");
 							notifList.push(WATERSTATUS);
-							var l = makeLine(notifList[notifList.length-1]);
+							var l = makeLine(i);
+							i++;
 							n.add(l);
 							lineList.push(l);
 							
 							var b = new deleteButton({ name:"deleteButton",
 								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
 									onTap: { value:  function(button){
 										var num = buttonArr.indexOf(button);
 										column.flower.notifications.n.empty(num, num+1)
@@ -439,39 +502,84 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 										notifList.splice(num, 1);
 										lineList.splice(num, 1);
 										if (buttonArr.length == 0) {
-											column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
 										}
+										i--;
 									}}
 								})
 							})
 							lineList[notifList.length -1].add(b)
 							buttonArr.push(b)
 						}
+						else {
+							if (WATERSTATUSPREV != WATERSTATUS && !noNotifFlag) {
+								column.flower.notifications.n.empty(indexWater, indexWater+1)
+								buttonArr.splice(indexWater, 1);
+								notifList.splice(indexWater, 1);
+								lineList.splice(indexWater, 1);
+								if (buttonArr.length == 0) {
+									column.flower.notifications.n.add(noNotifLabel);
+									noNotifFlag = true;
+								}
+								i--;
+								
+								var b = new deleteButton({ name:"deleteButton",
+								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
+									onTap: { value:  function(button){
+										var num = buttonArr.indexOf(button);
+										column.flower.notifications.n.empty(num, num+1)
+										buttonArr.splice(num, 1);
+										notifList.splice(num, 1);
+										lineList.splice(num, 1);
+										if (buttonArr.length == 0) {
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
+										}
+										i--;
+									}}
+								})
+								})
+							}
+						}
 					}},
 					onPHChanged: { value: function(application, data) {
 						var flagPH = false;
 						var indexPH = 0;
-						if (PHSTATUSPREV == PHSTATUS) {
+						
+						for (var len = 0; len < notifList.length; len++) {
+							 if (notifList[len].length >= 2 && notifList[len].substring(0,2) == "pH") {
+							 	flagPH = true;
+							 	indexPH = len;
+							 }
+						}
+						if (!flagPH && PHSTATUSPREV == PHSTATUS) {
 							flagPH = true;
-						} else {
-							for (var len = 0; len < notifList.length; len++) {
-								 if (notifList[len].length >= 2 && notifList[len].substring(0,2) == "pH") {
-								 	flagPH = true;
-								 	indexPH = len;
-								 }
-							}
 						}
 						
 						if (!flagPH) {
 							PHSTATUSPREV = PHSTATUS;
 							trace(PHSTATUS+"\n");
 							notifList.push(PHSTATUS);
-							var l = makeLine(notifList[notifList.length-1]);
+							var l = makeLine(i);
+							i++;
 							n.add(l);
 							lineList.push(l);
 							
 							var b = new deleteButton({ name:"deleteButton",
 								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
 									onTap: { value:  function(button){
 										var num = buttonArr.indexOf(button);
 										column.flower.notifications.n.empty(num, num+1)
@@ -479,39 +587,84 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 										notifList.splice(num, 1);
 										lineList.splice(num, 1);
 										if (buttonArr.length == 0) {
-											column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
 										}
+										i--;
 									}}
 								})
 							})
 							lineList[notifList.length -1].add(b)
 							buttonArr.push(b)
 						}
+						else {
+							if (PHSTATUSPREV != PHSTATUS && !noNotifFlag) {
+								column.flower.notifications.n.empty(indexPH, indexPH+1)
+								buttonArr.splice(indexPH, 1);
+								notifList.splice(indexPH, 1);
+								lineList.splice(indexPH, 1);
+								if (buttonArr.length == 0) {
+									column.flower.notifications.n.add(noNotifLabel);
+									noNotifFlag = true;
+								}
+								i--;
+								
+								var b = new deleteButton({ name:"deleteButton",
+								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
+									onTap: { value:  function(button){
+										var num = buttonArr.indexOf(button);
+										column.flower.notifications.n.empty(num, num+1)
+										buttonArr.splice(num, 1);
+										notifList.splice(num, 1);
+										lineList.splice(num, 1);
+										if (buttonArr.length == 0) {
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
+										}
+										i--;
+									}}
+								})
+								})
+							}
+						}
 					}},
 					onFilterChanged: { value: function(application, data) {
 						var flagFilter = false;
 						var indexFilter = 0;
-						if (FILTERSTATUSPREV == FILTERSTATUS) {
+						
+						for (var len = 0; len < notifList.length; len++) {
+							 if (notifList[len].length >= 6 && notifList[len].substring(0,6) == "Filter") {
+							 	flagFilter = true;
+							 	indexFilter = len;
+							 }
+						}
+						if (!flagFilter && FILTERSTATUSPREV == FILTERSTATUS) {
 							flagFilter = true;
-						} else {
-							for (var len = 0; len < notifList.length; len++) {
-								 if (notifList[len].length >= 6 && notifList[len].substring(0,6) == "Filter") {
-								 	flagFilter = true;
-								 	indexFilter = len;
-								 }
-							}
 						}
 						
 						if (!flagFilter) {
 							FILTERSTATUSPREV = FILTERSTATUS;
 							trace(FILTERSTATUS+"\n");
 							notifList.push(FILTERSTATUS);
-							var l = makeLine(notifList[notifList.length-1]);
+							var l = makeLine(i);
+							i++;
 							n.add(l);
 							lineList.push(l);
 							
 							var b = new deleteButton({ name:"deleteButton",
 								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
 									onTap: { value:  function(button){
 										var num = buttonArr.indexOf(button);
 										column.flower.notifications.n.empty(num, num+1)
@@ -519,39 +672,84 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 										notifList.splice(num, 1);
 										lineList.splice(num, 1);
 										if (buttonArr.length == 0) {
-											column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
 										}
+										i--;
 									}}
 								})
 							})
 							lineList[notifList.length -1].add(b)
 							buttonArr.push(b)
 						}
+						else {
+							if (FILTERSTATUSPREV != FILTERSTATUS && !noNotifFlag) {
+								column.flower.notifications.n.empty(indexFilter, indexFilter+1)
+								buttonArr.splice(indexFilter, 1);
+								notifList.splice(indexFilter, 1);
+								lineList.splice(indexFilter, 1);
+								if (buttonArr.length == 0) {
+									column.flower.notifications.n.add(noNotifLabel);
+									noNotifFlag = true;
+								}
+								i--;
+								
+								var b = new deleteButton({ name:"deleteButton",
+								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
+									onTap: { value:  function(button){
+										var num = buttonArr.indexOf(button);
+										column.flower.notifications.n.empty(num, num+1)
+										buttonArr.splice(num, 1);
+										notifList.splice(num, 1);
+										lineList.splice(num, 1);
+										if (buttonArr.length == 0) {
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
+										}
+										i--;
+									}}
+								})
+								})
+							}
+						}
 					}},
 					onStemChanged: { value: function(application, data) {
 						var flagStem = false;
 						var indexStem = 0;
-						if (STEMSTATUSPREV == STEMSTATUS) {
+						
+						for (var len = 0; len < notifList.length; len++) {
+							 if (notifList[len].length >= 4 && notifList[len].substring(0,4) == "Stem") {
+							 	flagStem = true;
+							 	indexStem = len;
+							 }
+						}
+						if (!flagStem && STEMSTATUSPREV == STEMSTATUS) {
 							flagStem = true;
-						} else {
-							for (var len = 0; len < notifList.length; len++) {
-								 if (notifList[len].length >= 4 && notifList[len].substring(0,4) == "Stem") {
-								 	flagStem = true;
-								 	indexStem = len;
-								 }
-							}
 						}
 						
 						if (!flagStem) {
 							STEMSTATUSPREV = STEMSTATUS;
 							trace(STEMSTATUS+"\n");
 							notifList.push(STEMSTATUS);
-							var l = makeLine(notifList[notifList.length-1]);
+							var l = makeLine(i);
+							i++;
 							n.add(l);
 							lineList.push(l);
 							
 							var b = new deleteButton({ name:"deleteButton",
 								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
 									onTap: { value:  function(button){
 										var num = buttonArr.indexOf(button);
 										column.flower.notifications.n.empty(num, num+1)
@@ -559,13 +757,51 @@ var column = new Column({left:0, right:0, top:0, bottom:0, skin:new Skin({fill:"
 										notifList.splice(num, 1);
 										lineList.splice(num, 1);
 										if (buttonArr.length == 0) {
-											column.flower.notifications.n.add(makeLabel("No new notifications!", l1))
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
 										}
+										i--;
 									}}
 								})
 							})
 							lineList[notifList.length -1].add(b)
 							buttonArr.push(b)
+						}
+						else {
+							if (STEMSTATUSPREV != STEMSTATUS && !noNotifFlag) {
+								column.flower.notifications.n.empty(indexStem, indexStem+1)
+								buttonArr.splice(indexStem, 1);
+								notifList.splice(indexStem, 1);
+								lineList.splice(indexStem, 1);
+								if (buttonArr.length == 0) {
+									column.flower.notifications.n.add(noNotifLabel);
+									noNotifFlag = true;
+								}
+								i--;
+								
+								var b = new deleteButton({ name:"deleteButton",
+								behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+									onCreate: { value:  function(button){
+										if (noNotifFlag) {
+											column.flower.notifications.n.empty(0, 1);
+											noNotifFlag = false;
+										}
+									}},
+									onTap: { value:  function(button){
+										var num = buttonArr.indexOf(button);
+										column.flower.notifications.n.empty(num, num+1)
+										buttonArr.splice(num, 1);
+										notifList.splice(num, 1);
+										lineList.splice(num, 1);
+										if (buttonArr.length == 0) {
+											column.flower.notifications.n.add(noNotifLabel);
+											noNotifFlag = true;
+										}
+										i--;
+									}}
+								})
+								})
+							}
 						}
 					}},
 				})
