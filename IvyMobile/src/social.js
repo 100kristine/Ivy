@@ -2,7 +2,7 @@
 var THEME = require('themes/flat/theme');
 var BUTTONS = require('controls/buttons');
 var mint = "#95cfb0";
-
+//
 // Styling
 var whiteSkin = new Skin( { fill:"white" } );//"#ea557b"
 var titlelabelStyle = new Style( { font: "30px Avenir", color:"white" } );
