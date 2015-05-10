@@ -6,10 +6,11 @@ var mint = "#95cfb0";
 // Styling
 var whiteSkin = new Skin( { fill:"white" } );//"#ea557b"
 var titlelabelStyle = new Style( { font: "30px Avenir", color:"white" } );
-var titleLabelStyle = new Style( { font: "20px Avenir", color:"#868786" } );
-var labelStyle = new Style( { font: "15px Avenir", color:"#868786" } );
+var titleLabelStyle = new Style( { font: "25px Avenir", color:"#1eaf5f" } );
+var labelStyle = new Style( { font: "20px Avenir", color:"#868786" } );
 var captionLabelStyle = new Style( { font: "11px Avenir", color:"white" } );
-var buttonStyle = new Style( { font: "17px Avenir", color:"green" } );
+var buttonStyle = new Style( { font: "20px Avenir", color:"white" } );
+var mintSkin = new Skin({fill:mint});
 var whiteS = new Skin({
     fill:"#4e4e4e", 
     borders:{left:2, right:2, top:2, bottom:2}, 
@@ -26,8 +27,8 @@ function makeLabel(str,sty){
 
 // Labels
 var orderFlowerLabel = new Label({left:15, top: 0, height: 10, string: "Order Flowers:", style: titleLabelStyle});
-var detectedAddressLabel1 = new Label({left:15, top:0, height: 10, string: "Street Address", style: labelStyle});
-var detectedAddressLabel2 = new Label({left:15, top: 0, height: 10, string: "City, Zipcode", style: labelStyle});
+var detectedAddressLabel1 = new Label({left:70, top:5, height: 10, string: "Street Address", style: labelStyle});
+var detectedAddressLabel2 = new Label({left:70, top: 5, height: 10, string: "City, Zipcode", style: labelStyle});
 var orderLabel = new Label({left:15, top: 20, height: 5, string: "Flowers are delivered in two days", style: labelStyle});
 var orderedLabel = new Label({right: 15, left:15, top: 5, height: 5, string: "", style: labelStyle});
 var friendLabel = new Label({left:15, top: -20, height: 10, bottom: 5, string: "Social: See What Friends Have Ordered", style: titleLabelStyle});
@@ -38,7 +39,7 @@ var friend3Label = new Label({left:15, top: 0, height: 10, string: "Automated:",
 
 // Buttons
 var detectAddressButton = BUTTONS.Button.template(function($){ return{
-    left: 80, right: 80, height:15, top:5,
+    left: 80, right: 80, height:15, top:5, skin: mintSkin,
     contents: [
         new Label({left:0, right:0, height:20, string:"Use Current Location", style: buttonStyle})
     ],
@@ -121,7 +122,7 @@ var detectAddressButton = BUTTONS.Button.template(function($){ return{
 }});
 
 var orderButton = BUTTONS.Button.template(function($){ return{
-    left: 80, right: 80, height:15, top:10,
+    left: 80, right: 80, height:15, top:10, skin:mintSkin,
     contents: [
         new Label({left:0, right:0, height:20, string:"Order Flowers", style: buttonStyle})
     ],
@@ -207,7 +208,7 @@ var urlList = ["jimmy.png","sean.png","kristine.png","niha.png"];
 //                "tulip.png","orchid.png","rose.png","daisy.png"];
 
 var gridClickable = BUTTONS.Button.template(function($){ return{
-    top:0, bottom:0, left:0, right:0,name:"off",skin: whiteS,
+    top:0, bottom:0, left:0, right:0,name:"off",skin: mintSkin,
     contents:[
         new Picture({left:0, right:0, top:10, height:40, width:40, url: $.url, name: $.name})
     ],
@@ -252,17 +253,33 @@ function selectableGrid(){
     
     return col;
 }
-
-
-
-
+function columnMake(){
+	return new Column({left:0, right:0, top:0, bottom:0, height:20, skin: new Skin({fill:"#1eaf5f"}),
+	                        contents:[
+	                            makeLabel("Delivery/Social",l3)
+	                        ]
+	                    }),
+	    }               
+function line1() {
+return new Line({left:0, right:0, top:0, bottom:0, height:20, skin: new Skin({fill:"#1eaf5f"}),
+                        contents:[
+                            makeLabel("Delivery/Social",l3)
+                        ]
+                    }),
+}
 // Make Column for main.js
+var friendline = new Line({left:0, right:0, top:0, bottom:0, height:20, skin: new Skin({fill:"#1eaf5f"}),
+                        contents:[
+                            makeLabel("Delivery/Social",l3)
+                        ]
+                    })
+
 function getColumn(){
 
-    return new Column({name:"social", left:0, right:0, top:0, bottom:50, skin: new Skin({fill:"white"}), 
+    return new Column({name:"social", left:0, right:0, top:0, bottom:40, skin: new Skin({fill:"white"}), 
                 contents:[
                     //new Line({name:"fill", left:0, right:0, top:5, bottom:0, skin: new Skin({fill:"#9bd91f"})}),
-                    new Line({left:0, right:0, top:0, bottom:0, height:20, skin: new Skin({fill:"#1eaf5f"}),
+                    new Line({left:0, right:0, top:0, bottom:15, height:1, skin: new Skin({fill:"#1eaf5f"}),
                         contents:[
                             makeLabel("Delivery/Social",l3)
                         ]
@@ -276,11 +293,12 @@ function getColumn(){
                     new orderButton(),
                     orderedLabel,
                     friendLabel,
-                    //socialLabel,
-                    //friend1Label,
-                    //friend2Label,
-                    //friend3Label,
-                    selectableGrid()
+                    new Line({left:0, right:0, top:-25, bottom:0, height:20, skin: new Skin({fill:"#1eaf5f"}),
+                       contents: [
+                       new Picture({right:0, left:0, top:-10,bottom:20, height: 200, width: 400}, "buyingsocial.jpg")
+                        ]
+                    })
+                    
                 ]});                    
 }
 
