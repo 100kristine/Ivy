@@ -19,7 +19,7 @@ var logoSkin   = new Skin({ fill:"black"   , width:100, height:100, texture: new
 
 var l1		   = new Style({ font: "25px Avenir"      , color: "#868786" });
 var l2		   = new Style({ font: "35px Avenir Black", color: "#1eaf5f" , horizontal:"left"});
-var l3		   = new Style({ font: "70px Avenir"      , color: "white"   });
+var l3		   = new Style({ font: "55px Avenir"      , color: "white"   });
 var labelStyle = new Style({ font: "20px Avenir"      , color: "black"   });
 var textStyle  = new Style({ font: "55px Avenir"      , color: "white"   });
 

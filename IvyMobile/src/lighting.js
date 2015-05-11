@@ -208,7 +208,7 @@ function getColumn(){
 	//var subgrid = selectableGrid();
 	return new Column({name:"lights", left:0, right:0, top:0, bottom:100, skin: new Skin({fill:background}), 
 				contents:[
-					new Line({left:0, right:0, top:0, bottom:0, skin: new Skin({fill:"#1eaf5f"}),
+					new Line({left:0, right:0, top:0, bottom:0, height:80, skin: new Skin({fill:"#1eaf5f"}),
 						contents:[
 							makeLabel("Lighting",l3)
 						]
